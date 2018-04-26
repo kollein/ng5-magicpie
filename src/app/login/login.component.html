@@ -1,0 +1,24 @@
+<div class="login-container">
+  <div class="login-wrapper ui-card">
+    <form id="login">
+      <div class="bound-form-control">
+        <input [(ngModel)]="userInput.username" class="form-control" data-require="1" type="text" name="user_name">
+        <label class="label-place-top">
+            <span class="label-title">Username</span>
+        </label>
+      </div>
+      <div class="bound-form-control">
+        <input [(ngModel)]="userInput.password" class="form-control" data-require="1" type="text" name="user_password">
+        <label class="label-place-top">
+            <span class="label-title">Password</span>
+        </label>
+      </div>
+      <div class="error-msg-line">{{message}}</div>
+      <div class="row">
+        <div class="btn btn-default btn-blue login-btn" data-ripple (click)="login()">
+          <span class="text">Login</span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
