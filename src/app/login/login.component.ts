@@ -9,8 +9,8 @@ import { Subscriber } from 'rxjs/Subscriber';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  private userData: Array<any>;
-  private userInput = {
+  public userData: Array<any>;
+  public userInput = {
     "username": "",
     "password": ""
   };
@@ -23,7 +23,7 @@ export class LoginComponent {
       "login": "Login successfully!"
     }
   };
-  private message = '';
+  public message = '';
 
   constructor(private playerService: PlayerService) {
     
@@ -50,9 +50,7 @@ export class LoginComponent {
     this.showMessage(msgError);
   }
 
-  showMessage(msg): void {
-    if ( msg ) {
-      this.message = msg;
-    }
+  showMessage(msg: string): void {
+    this.message = msg;
   }
 }

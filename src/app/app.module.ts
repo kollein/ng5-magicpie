@@ -10,12 +10,14 @@ import { AppRoutingModule }     from './app-routing.module';
 import { PlayerService }        from './service/player.service';
 import { MessageService }       from './service/message.service';
 import { HomeComponent } from './home/home.component';
+import { ObserComponent } from './obser/obser.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ObserComponent
   ],
   imports: [
     BrowserModule,

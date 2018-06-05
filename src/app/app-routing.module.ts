@@ -3,9 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
  
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { ObserComponent } from './obser/obser.component';
  
 const routes: Routes = [
-  { path: '', component: HomeComponent }
+  { path: '', component: LoginComponent },
+  { path: 'dashboard', component: HomeComponent },
+  { path: 'login', component: LoginComponent }
 ];
  
 @NgModule({
