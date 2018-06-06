@@ -6,9 +6,10 @@ import { HomeComponent } from './home/home.component';
 import { ObserComponent } from './obser/obser.component';
  
 const routes: Routes = [
-  { path: '', component: ObserComponent },
+  { path: '', component: LoginComponent },
   { path: 'dashboard', component: HomeComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'obser', component: ObserComponent }
 ];
  
 @NgModule({

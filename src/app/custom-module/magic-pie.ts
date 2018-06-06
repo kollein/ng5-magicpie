@@ -40,15 +40,15 @@ export class MagicPie {
 
   restartRippleWave() {
     let opts = {
-      "ripple": ".ripple",
-      "rippleWave": ".rippleWave",
-      "active": ".active",
-      "opacityTime": 100
+      "rippleCls": "ripple",
+      "activeCls": "activeRipple"
     };
     let transitionendState = false;
     let setState = () => {
+      console.log('ended transit!');
       transitionendState = true;
     };
+    
 
     this.d.addEventListener('mousedown', (event) => {
       let isRipple = false,
@@ -65,12 +65,13 @@ export class MagicPie {
 
       if( isRipple === true ) {
         // AVOID DUPLICATE CLICK ON @.ripple
-        let old_el_ripple = target.querySelector(opts.ripple);
+        let old_el_ripple = target.querySelector('.' + opts.rippleCls);
         console.log("old_el_ripple:" + old_el_ripple);
-        if ( old_el_ripple === null ) {
+
+        if ( old_el_ripple !== null ) {
           // ASSIGN LEXICAL @this
           let _self = target;
-          this.addClass(_self, opts.active.substr(1));
+          this.addClass(_self, opts.activeCls);
           /*
             FIND POSITION OF @this
             Note: clientX, clientY: get position with screen-captured as what you see on
@@ -78,54 +79,31 @@ export class MagicPie {
           let offs = _self.getBoundingClientRect(),
             x = event.clientX - offs.left,
             y = event.clientY - offs.top,
-            adjacent_side = (offs.width - x > offs.width / 2) ? offs.width - x : x,
-            opposite_side = (offs.height - y > offs.height / 2) ? offs.height - y : y,
-            hypothenuse_side = Math.sqrt(Math.pow(adjacent_side, 2) + Math.pow(opposite_side, 2)) + 1;
-          // CREATE @.ripple WRAPPER
-          let el_ripple = this.d.createElement('div');
-          el_ripple.setAttribute('class', opts.ripple.substr(1));
-          _self.prepend(el_ripple);
-          // Wrapped @.ripple inside @this
-          _self.style.position = "relative";
-          // CREATE @.rippleWave inside @.ripple
-          let el_rippleWave = this.d.createElement('div');
-          el_rippleWave.setAttribute('class', opts.rippleWave.substr(1));
-          // MAKING STYLE FOR ANIMATION
-          let cssString = 'background: ' + _self.getAttribute('data-ripple') + ';width: ' + hypothenuse_side + 'px;height: ' + hypothenuse_side + 'px;left: ' + (x - (hypothenuse_side / 2)) + 'px;top: ' + (y - (hypothenuse_side / 2)) + 'px;transform: scale(2.2);';
-          el_ripple.appendChild(el_rippleWave);
-          // ANIMATION NOW!
-          setTimeout(() => {
-            // REWRITE ALL PROPERTY: STYLE INLINE
-            el_rippleWave.style.cssText = cssString;
-          }, 0);
+            elWidth = offs.width;
+          // Stylize @.ripple
+          let el_ripple = _self.querySelector('.' + opts.rippleCls);
+          el_ripple.style.cssText = 'width: ' + elWidth + 'px;height: ' + elWidth + 'px;top: ' + y + 'px;left: ' + x + 'px;';
 
-          el_rippleWave.addEventListener("transitionend", setState);
+          let removeEffect = () => {
+            this.removeClass(_self, opts.activeCls);
+            el_ripple.removeEventListener("transitionend", removeEffect);            
+          }
 
-          _self.addEventListener("mouseup", (event) => {
-            let removeEffect = () => {
-              // FADE OUT RIPPLE BEFORE REMOVE
-              el_ripple.style.opacity = 0;
-              el_ripple.style.transition = `opacity ${opts.opacityTime}ms linear`;
-              // REMOVE AFTER DELAY TO SEE EFFECT
-              setTimeout(() => {
-                // RE-SELECTOR TO AVOID ERROR REMOVE ON DIFFERENT NODE
-                let el_ripple_has_appended = _self.querySelector(opts.ripple);
-                if (el_ripple_has_appended) {
-                  _self.removeChild(el_ripple_has_appended);
-                }
-                this.removeClass(_self, opts.active.substr(1));      
-              }, opts.opacityTime);
-            }
-            // REMOVE RIPPLE WHEN RIPPLEWAVE EFFECTIVE DONE!
+          let endtour = () => {
             if ( transitionendState ) {
+              console.log('ending!');
               removeEffect();
               transitionendState = false;
             } else {
-              el_rippleWave.removeEventListener("transitionend", setState);
-              el_rippleWave.addEventListener("transitionend", () => {
-                removeEffect();
-              });
+              console.log('delete plz!');
+              el_ripple.removeEventListener("transitionend", setState);
+              el_ripple.addEventListener("transitionend", removeEffect);
             }
+          }
+          
+          el_ripple.addEventListener("transitionend", setState);
+          ['mouseup', 'mouseleave'].forEach(evt => {
+            _self.addEventListener(evt, endtour);
           });
         }
       }
