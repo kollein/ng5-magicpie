@@ -304,8 +304,6 @@ body {
   position: relative;
 }
 .ripple {
-  backface-visibility: hidden;
-  border-radius: 50%;
   background-image: radial-gradient(circle farthest-side,#2a56c6,#2a56c6 80%,rgba(42,86,198,0) 100%);
   transform: translate(-50%,-50%) scale(0);
   transition: opacity .2s ease, visibility 0s ease .2s, transform 0s ease .2s;

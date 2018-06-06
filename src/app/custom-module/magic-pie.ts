@@ -41,7 +41,8 @@ export class MagicPie {
   restartRippleWave() {
     let opts = {
       "rippleCls": "ripple",
-      "activeCls": "activeRipple"
+      "activeCls": "activeRipple",
+      "customEvents": ['mouseup', 'mouseleave']
     };
     let transitionendState = false;
     let setState = () => {
@@ -84,11 +85,6 @@ export class MagicPie {
           let el_ripple = _self.querySelector('.' + opts.rippleCls);
           el_ripple.style.cssText = 'width: ' + elWidth + 'px;height: ' + elWidth + 'px;top: ' + y + 'px;left: ' + x + 'px;';
 
-          let removeEffect = () => {
-            this.removeClass(_self, opts.activeCls);
-            el_ripple.removeEventListener("transitionend", removeEffect);            
-          }
-
           let endtour = () => {
             if ( transitionendState ) {
               console.log('ending!');
@@ -100,9 +96,18 @@ export class MagicPie {
               el_ripple.addEventListener("transitionend", removeEffect);
             }
           }
+
+          let removeEffect = () => {
+            this.removeClass(_self, opts.activeCls);
+            el_ripple.removeEventListener("transitionend", setState);
+            el_ripple.removeEventListener("transitionend", removeEffect);
+            opts.customEvents.forEach(evt => {
+              _self.removeEventListener(evt, endtour);
+            });       
+          }
           
           el_ripple.addEventListener("transitionend", setState);
-          ['mouseup', 'mouseleave'].forEach(evt => {
+          opts.customEvents.forEach(evt => {
             _self.addEventListener(evt, endtour);
           });
         }
