@@ -40,21 +40,30 @@ export class MagicPie {
 
   restartRippleWave() {
     let opts = {
-      "rippleCls": "ripple",
-      "activeCls": "activeRipple",
-      "customEvents": ['mouseup', 'mouseleave']
+      data_ripple: "data-ripple",
+      rippleCls: "ripple",
+      activeCls: "activeRipple",
+      mouseEvents: ['mouseup', 'mouseleave'],
+      delayBeforeEndTour: 100,
+      cheatKeys: {
+        happyEnding: 'happy-ending'
+      }
     };
-    let transitionendState = false;
-    let setState = () => {
-      console.log('ended transit!');
-      transitionendState = true;
-    };
-    
+    // create DOM for each data-ripple
+    // DOCs: https://eager.io/blog/how-to-decide-when-your-code-should-run/
+    setTimeout(() => {
+      let ripples = this.d.querySelectorAll(`[${opts.data_ripple}]`);
+      ripples.forEach(ele => {
+        let rippleDiv = this.d.createElement('div');
+            rippleDiv.setAttribute('class', opts.rippleCls); 
+        ele.prepend(rippleDiv);
+      });
+    }, 0);
 
     this.d.addEventListener('mousedown', (event) => {
       let isRipple = false,
           target = event.target;
-      if ( target.hasAttribute('data-ripple') === true ) {
+      if ( target.hasAttribute(opts.data_ripple) === true ) {
         isRipple = true;
       } else {
         let realTarget = this.getClosestTarget(event.path);
@@ -85,29 +94,41 @@ export class MagicPie {
           let el_ripple = _self.querySelector('.' + opts.rippleCls);
           el_ripple.style.cssText = 'width: ' + elWidth + 'px;height: ' + elWidth + 'px;top: ' + y + 'px;left: ' + x + 'px;';
 
+          let setStransendState = (val = true) => {
+            _self.setAttribute('istransend', val);            
+          }
+          let getStransendState = () => {
+            return _self.getAttribute('istransend');            
+          }
+
+          setStransendState(false);
+          
           let endtour = () => {
-            if ( transitionendState ) {
-              console.log('ending!');
-              removeEffect();
-              transitionendState = false;
+            if ( getStransendState() !== 'false' ) {
+              console.log('happy ending!');
+              removeEffect(opts.cheatKeys.happyEnding);
+              setStransendState(false);
             } else {
-              console.log('delete plz!');
-              el_ripple.removeEventListener("transitionend", setState);
+              console.log('renew transitionend event then auto-delete!');
+              el_ripple.removeEventListener("transitionend", setStransendState);
               el_ripple.addEventListener("transitionend", removeEffect);
             }
           }
 
-          let removeEffect = () => {
-            this.removeClass(_self, opts.activeCls);
-            el_ripple.removeEventListener("transitionend", setState);
+          let removeEffect = (state) => {
+            setTimeout(() => {
+              this.removeClass(_self, opts.activeCls);
+            }, (state === opts.cheatKeys.happyEnding ? 0 : opts.delayBeforeEndTour) );
+
+            el_ripple.removeEventListener("transitionend", setStransendState);
             el_ripple.removeEventListener("transitionend", removeEffect);
-            opts.customEvents.forEach(evt => {
+            opts.mouseEvents.forEach(evt => {
               _self.removeEventListener(evt, endtour);
             });       
           }
           
-          el_ripple.addEventListener("transitionend", setState);
-          opts.customEvents.forEach(evt => {
+          el_ripple.addEventListener("transitionend", setStransendState);
+          opts.mouseEvents.forEach(evt => {
             _self.addEventListener(evt, endtour);
           });
         }

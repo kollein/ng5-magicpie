@@ -229,10 +229,6 @@ body {
   text-align: center;
   text-transform: uppercase;
   -webkit-tap-highlight-color: transparent;
-  &.activezzz {
-    box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
-    background-image: radial-gradient(circle farthest-side,rgba(0,0,0,0.12),rgba(0,0,0,0.12) 80%,rgba(0,0,0,0) 100%);
-  }
 }
 .btn-default {
   transition: box-shadow .28s cubic-bezier(0.4,0.0,0.2,1);
@@ -242,6 +238,11 @@ body {
 .btn-blue {
   background: #4285f4;
   color: #fff;
+  &.activeRipple {
+    transition: background .8s;
+    box-shadow: 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12), 0 5px 5px -3px rgba(0,0,0,0.2);
+    background-image: radial-gradient(circle farthest-side,rgba(0,0,0,0.12),rgba(0,0,0,0.12) 80%,rgba(0,0,0,0) 100%);
+  }
 }
 
 /*** EFFECTS ***/
