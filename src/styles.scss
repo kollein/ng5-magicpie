@@ -594,6 +594,9 @@ body {
       transform: scale(.75) translateY(-39px);
     }
   }
+  &.valued .control-label {
+    transform: scale(.75) translateY(-39px);
+  }
   .control-label {
     box-sizing: inherit;
     color: #757575;

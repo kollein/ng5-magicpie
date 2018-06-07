@@ -164,18 +164,18 @@ export class MagicPie {
         target.addEventListener('focus', (event) => {
           _self.classList.add(opts.activeCls);
           if (target.value) {
-            target.classList.remove('error');
-            target.classList.remove('valued');
+            _self.classList.remove('error');
+            _self.classList.remove('valued');
           }
         });
         // FOCUSOUT
         target.addEventListener('focusout', (event) => {
           _self.classList.remove(opts.activeCls);          
           if (target.value) {
-            target.classList.remove('error');
-            target.classList.add('valued');
+            _self.classList.remove('error');
+            _self.classList.add('valued');
           } else {
-            target.classList.remove('valued');
+            _self.classList.remove('valued');
           }
         });
       }
