@@ -544,7 +544,9 @@ body {
   }
 }
 
-
+%transform-shared {
+  transform: scale(.75) translateY(-39px);
+}
 .gg-bound-control {
   -webkit-tap-highlight-color: transparent;
   display: inline-block;
@@ -591,11 +593,11 @@ body {
     z-index: 0;
     &:not([disabled]):focus ~ .control-label {
       color: #4285f4;
-      transform: scale(.75) translateY(-39px);
+      @extend %transform-shared;
     }
   }
   &.valued .control-label {
-    transform: scale(.75) translateY(-39px);
+    @extend %transform-shared;
   }
   .control-label {
     box-sizing: inherit;
@@ -611,6 +613,10 @@ body {
     bottom: 3px;
     left: 0;
     width: 100%;
+  }
+  &.error .df-bottom-border {
+    background-color: #d50000;
+    height: 2px;
   }
   .df-bottom-border {
     box-sizing: inherit;
@@ -649,6 +655,7 @@ body {
     animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      
     transform: scale(1);
   }
+  
 }
 
 @keyframes quantumWizPaperInputRemoveUnderline {

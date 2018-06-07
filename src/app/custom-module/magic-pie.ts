@@ -152,7 +152,8 @@ export class MagicPie {
     let opts = {
       gg_bound_control_cls: "gg-bound-control",
       activeCls: "active-ggBoundControl",
-      control_ipt_cls: "control-ipt"
+      control_ipt_cls: "control-ipt",
+      ef_bottom_border_cls: "ef-bottom-border"
     }
 
     this.d.addEventListener('mousedown', (event) => {
@@ -160,6 +161,16 @@ export class MagicPie {
       let _self = this.getBoundControlClosestTarget(event.path);
 
       if( target.classList.contains(opts.control_ipt_cls) === true ) {
+        /*
+          FIND POSITION OF @this
+          Note: clientX, clientY: get position with screen-captured as what you see on
+        */
+        let offs = _self.getBoundingClientRect(),
+            x = event.clientX - offs.left;
+       // Stylize @.ripple
+       let el_ef_bottom_border = _self.querySelector('.' + opts.ef_bottom_border_cls);
+       el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
+
         // FOCUS
         target.addEventListener('focus', (event) => {
           _self.classList.add(opts.activeCls);
