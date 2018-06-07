@@ -586,11 +586,10 @@ body {
     font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
     height: 24px;
     line-height: 24px;
-    margin: 0;
     min-width: 0%;
     outline: none;
+    margin: 0;
     padding: 0;
-    z-index: 0;
     &:not([disabled]):focus ~ .control-label {
       color: #4285f4;
       @extend %transform-shared;
@@ -621,13 +620,13 @@ body {
   .df-bottom-border {
     box-sizing: inherit;
     background-color: rgba(0,0,0,0.12);
-    bottom: -2px;
+    width: 100%;
     height: 1px;
+    position: absolute;
+    bottom: -2px;
     left: 0;
     margin: 0;
     padding: 0;
-    position: absolute;
-    width: 100%;
     &:before {
       content: "";
       position: absolute;
@@ -643,13 +642,13 @@ body {
     animation: quantumWizPaperInputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
     transform: scaleX(0);
     background-color: #4285f4;
-    bottom: -2px;
+    width: 100%;
     height: 2px;
+    position: absolute;
+    bottom: -2px;
     left: 0;
     margin: 0;
     padding: 0;
-    position: absolute;
-    width: 100%;
   }
   &.active-ggBoundControl .ef-bottom-border {
     animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      

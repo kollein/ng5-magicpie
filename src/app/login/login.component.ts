@@ -14,6 +14,10 @@ export class LoginComponent {
     "username": "",
     "password": ""
   };
+  public userInputState = {
+    "username": true,
+    "password": true
+  };
   msg = {
     "error": {
       "username": "Username is wrong!",
@@ -41,8 +45,10 @@ export class LoginComponent {
         msgError = '';
         if ( user.password === this.userInput.password ) {
           msgError = '';
+          this.userInputState.password = true;          
         } else {
           msgError = this.msg.error.password;
+          this.userInputState.password = false;
         }
       }
     }

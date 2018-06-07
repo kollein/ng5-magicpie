@@ -10,39 +10,11 @@ export class MagicPie {
     this.d = this.a.document;
   }
 
-  addClass(el, className) {
-    if (el.classList) {
-      el.classList.add(className);
-    } else {
-      el.className += ' ' + className;
-    }
-  }
-
-  removeClass(el, className) {
-    if (el.classList) {
-      el.classList.remove(className);
-    } else {
-      el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-    }
-  }
-
-  getClosestTarget(path) {
+  getClosestTargetByAttrName(path, attrName) {
     path = path.slice(0, -3);
     let target, check = false;
     for ( let x of path ) {
-      if ( x.hasAttribute('data-ripple') === true ) {
-        target = x;
-        break;
-      }
-    }
-    return target;
-  }
-
-  getBoundControlClosestTarget(path) {
-    path = path.slice(0, -3);
-    let target, check = false;
-    for ( let x of path ) {
-      if ( x.hasAttribute('data-bound-control') === true ) {
+      if ( x.hasAttribute(attrName) === true ) {
         target = x;
         break;
       }
@@ -52,7 +24,7 @@ export class MagicPie {
 
   restartRippleWave() {
     let opts = {
-      data_ripple: "data-ripple",
+      data_container: "data-ripple",
       rippleCls: "ripple",
       activeCls: "activeRipple",
       mouseEvents: ['mouseup', 'mouseleave'],
@@ -64,7 +36,7 @@ export class MagicPie {
     // create DOM for each data-ripple
     // DOCs: https://eager.io/blog/how-to-decide-when-your-code-should-run/
     setTimeout(() => {
-      let ripples = this.d.querySelectorAll(`[${opts.data_ripple}]`);
+      let ripples = this.d.querySelectorAll(`[${opts.data_container}]`);
       ripples.forEach(ele => {
         let rippleDiv = this.d.createElement('div');
             rippleDiv.setAttribute('class', opts.rippleCls); 
@@ -75,10 +47,10 @@ export class MagicPie {
     this.d.addEventListener('mousedown', (event) => {
       let isRipple = false,
           target = event.target;
-      if ( target.hasAttribute(opts.data_ripple) === true ) {
+      if ( target.hasAttribute(opts.data_container) === true ) {
         isRipple = true;
       } else {
-        let realTarget = this.getClosestTarget(event.path);
+        let realTarget = this.getClosestTargetByAttrName(event.path, opts.data_container);
         if ( realTarget !== undefined ) {
           target = realTarget;
           isRipple = true;
@@ -87,13 +59,13 @@ export class MagicPie {
 
       if( isRipple === true ) {
         // AVOID DUPLICATE CLICK ON @.ripple
-        let old_el_ripple = target.querySelector('.' + opts.rippleCls);
+        let old_el_ripple = target.querySelector(`.${opts.rippleCls}`);
         console.log("old_el_ripple:" + old_el_ripple);
 
         if ( old_el_ripple !== null ) {
           // ASSIGN LEXICAL @this
           let _self = target;
-          this.addClass(_self, opts.activeCls);
+          _self.classList.add(opts.activeCls);
           /*
             FIND POSITION OF @this
             Note: clientX, clientY: get position with screen-captured as what you see on
@@ -103,8 +75,8 @@ export class MagicPie {
             y = event.clientY - offs.top,
             elWidth = offs.width;
           // Stylize @.ripple
-          let el_ripple = _self.querySelector('.' + opts.rippleCls);
-          el_ripple.style.cssText = 'width: ' + elWidth + 'px;height: ' + elWidth + 'px;top: ' + y + 'px;left: ' + x + 'px;';
+          let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
+          el_ripple.style.cssText = `width: ${elWidth}px;height:${elWidth}px;top:${y}px;left:${x}px;`;
 
           let setStransendState = (val = true) => {
             _self.setAttribute('istransend', val);            
@@ -129,7 +101,7 @@ export class MagicPie {
 
           let removeEffect = (state) => {
             setTimeout(() => {
-              this.removeClass(_self, opts.activeCls);
+              _self.classList.remove(opts.activeCls);
             }, (state === opts.cheatKeys.happyEnding ? 0 : opts.delayBeforeEndTour) );
 
             el_ripple.removeEventListener("transitionend", setStransendState);
@@ -150,6 +122,7 @@ export class MagicPie {
 
   restartFormControl() {
     let opts = {
+      data_container: "data-bound-control",
       gg_bound_control_cls: "gg-bound-control",
       activeCls: "active-ggBoundControl",
       control_ipt_cls: "control-ipt",
@@ -158,24 +131,19 @@ export class MagicPie {
 
     this.d.addEventListener('mousedown', (event) => {
       let target = event.target;
-      let _self = this.getBoundControlClosestTarget(event.path);
+      let _self = this.getClosestTargetByAttrName(event.path, opts.data_container);
 
       if( target.classList.contains(opts.control_ipt_cls) === true ) {
-        /*
-          FIND POSITION OF @this
-          Note: clientX, clientY: get position with screen-captured as what you see on
-        */
         let offs = _self.getBoundingClientRect(),
             x = event.clientX - offs.left;
-       // Stylize @.ripple
-       let el_ef_bottom_border = _self.querySelector('.' + opts.ef_bottom_border_cls);
+       // Stylize @.el_ef_bottom_border
+       let el_ef_bottom_border = _self.querySelector(`.${opts.ef_bottom_border_cls}`);
        el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
 
         // FOCUS
         target.addEventListener('focus', (event) => {
           _self.classList.add(opts.activeCls);
           if (target.value) {
-            _self.classList.remove('error');
             _self.classList.remove('valued');
           }
         });
@@ -183,7 +151,6 @@ export class MagicPie {
         target.addEventListener('focusout', (event) => {
           _self.classList.remove(opts.activeCls);          
           if (target.value) {
-            _self.classList.remove('error');
             _self.classList.add('valued');
           } else {
             _self.classList.remove('valued');

@@ -1,25 +1,11 @@
 <div class="login-container">
   <div class="login-wrapper ui-card">
     <form id="login">
-      <!-- <div class="bound-form-control">
-        <input [(ngModel)]="userInput.username" class="form-control" data-require="1" type="text" name="user_name">
-        <label class="label-place-top">
-            <span class="label-title">Username</span>
-        </label>
-      </div>
-      <div class="bound-form-control">
-        <input [(ngModel)]="userInput.password" class="form-control" data-require="1" type="text" name="user_password">
-        <label class="label-place-top">
-            <span class="label-title">Password</span>
-        </label>
-      </div> -->
-
-
       <div class="gg-bound-control" data-bound-control>
         <div class="bound-control-outer">
           <div class="bound-control-inner">
             <div class="bound-control-ipt">
-              <input class="control-ipt" type="text" name="username" spellcheck="false" autocomplete="off">
+              <input class="control-ipt" type="text" name="username" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.username">
               <div class="control-label">Username</div>
             </div>
             <div class="df-bottom-border"></div>
@@ -27,14 +13,21 @@
           </div>
         </div>
       </div>
-
-
+      <div class="gg-bound-control" [ngClass]="{'error': !userInputState.password}" data-bound-control>
+        <div class="bound-control-outer">
+          <div class="bound-control-inner">
+            <div class="bound-control-ipt">
+              <input class="control-ipt" type="password" name="password" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.password">
+              <div class="control-label">Password</div>
+            </div>
+            <div class="df-bottom-border"></div>
+            <div class="ef-bottom-border"></div>
+          </div>
+        </div>
+      </div>
 
       <div class="error-msg-line">{{message}}</div>
       <div class="row">
-        <div class="btn btn-default btn-blue login-btn" data-ripple (click)="login()">
-          <span class="text">Register</span>
-        </div>
         <div class="btn btn-default btn-blue login-btn" data-ripple (click)="login()">
           <span class="text">Login</span>
         </div>
