@@ -543,3 +543,126 @@ body {
       }
   }
 }
+
+
+.gg-bound-control {
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+  outline: none;
+  width: 100%;
+  box-sizing: content-box;
+  font-size: 15px;
+  .bound-control-outer {
+    box-sizing: inherit;
+    height: 40px;
+    position: relative;
+    vertical-align: top;
+    padding-top: 24px;
+  }
+  .bound-control-inner {
+    box-sizing: inherit;
+    display: flex;
+    position: relative;
+    top: 14px;
+  }
+  .bound-control-ipt {
+    box-sizing: inherit;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0%;
+    position: relative;
+  }
+  .control-ipt {
+    box-sizing: inherit;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: transparent;
+    border: none;
+    display: block;
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    height: 24px;
+    line-height: 24px;
+    margin: 0;
+    min-width: 0%;
+    outline: none;
+    padding: 0;
+    z-index: 0;
+    &:not([disabled]):focus ~ .control-label {
+      color: #4285f4;
+      transform: scale(.75) translateY(-39px);
+    }
+  }
+  .control-label {
+    box-sizing: inherit;
+    color: #757575;
+    transform-origin: bottom left;
+    transition: all .3s cubic-bezier(0.4,0,0.2,1);
+    transition-property: color,bottom,transform;
+    color: rgba(0,0,0,0.38);
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    pointer-events: none;
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    width: 100%;
+  }
+  .df-bottom-border {
+    box-sizing: inherit;
+    background-color: rgba(0,0,0,0.12);
+    bottom: -2px;
+    height: 1px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid rgba(0,0,0,0);
+      pointer-events: none;
+    }
+  }
+  .ef-bottom-border {
+    animation: quantumWizPaperInputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
+    transform: scaleX(0);
+    background-color: #4285f4;
+    bottom: -2px;
+    height: 2px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+  }
+  &.active-ggBoundControl .ef-bottom-border {
+    animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      
+    transform: scale(1);
+  }
+}
+
+@keyframes quantumWizPaperInputRemoveUnderline {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  } 
+}
+@keyframes quantumWizPaperInputAddUnderline {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  } 
+}

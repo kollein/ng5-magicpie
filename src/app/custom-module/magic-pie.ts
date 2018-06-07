@@ -38,6 +38,18 @@ export class MagicPie {
     return target;
   }
 
+  getBoundControlClosestTarget(path) {
+    path = path.slice(0, -3);
+    let target, check = false;
+    for ( let x of path ) {
+      if ( x.hasAttribute('data-bound-control') === true ) {
+        target = x;
+        break;
+      }
+    }
+    return target;
+  }
+
   restartRippleWave() {
     let opts = {
       data_ripple: "data-ripple",
@@ -48,7 +60,7 @@ export class MagicPie {
       cheatKeys: {
         happyEnding: 'happy-ending'
       }
-    };
+    }
     // create DOM for each data-ripple
     // DOCs: https://eager.io/blog/how-to-decide-when-your-code-should-run/
     setTimeout(() => {
@@ -137,13 +149,20 @@ export class MagicPie {
   }
 
   restartFormControl() {
-  
+    let opts = {
+      gg_bound_control_cls: "gg-bound-control",
+      activeCls: "active-ggBoundControl",
+      control_ipt_cls: "control-ipt"
+    }
+
     this.d.addEventListener('mousedown', (event) => {
       let target = event.target;
+      let _self = this.getBoundControlClosestTarget(event.path);
 
-      if( target.classList.contains('form-control') === true ) {
+      if( target.classList.contains(opts.control_ipt_cls) === true ) {
         // FOCUS
         target.addEventListener('focus', (event) => {
+          _self.classList.add(opts.activeCls);
           if (target.value) {
             target.classList.remove('error');
             target.classList.remove('valued');
@@ -151,6 +170,7 @@ export class MagicPie {
         });
         // FOCUSOUT
         target.addEventListener('focusout', (event) => {
+          _self.classList.remove(opts.activeCls);          
           if (target.value) {
             target.classList.remove('error');
             target.classList.add('valued');
