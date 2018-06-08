@@ -26,7 +26,7 @@ export class MagicPie {
     let opts = {
       data_container: "data-ripple",
       rippleCls: "ripple",
-      activeCls: "activeRipple",
+      activeCls: "active-ripple",
       mouseEvents: ['mouseup', 'mouseleave'],
       delayBeforeEndTour: 100,
       cheatKeys: {
@@ -124,9 +124,9 @@ export class MagicPie {
     let opts = {
       data_container: "data-bound-control",
       gg_bound_control_cls: "gg-bound-control",
-      activeCls: "active-ggBoundControl",
-      control_ipt_cls: "control-ipt",
-      ef_bottom_border_cls: "ef-bottom-border"
+      activeCls: "active-gg-bound-control",
+      control_ipt_cls: "gg-bound-control-input",
+      ef_bottom_border_cls: "gg-bound-control-ef-bottom-border"
     }
 
     this.d.addEventListener('mousedown', (event) => {
@@ -144,16 +144,16 @@ export class MagicPie {
         target.addEventListener('focus', (event) => {
           _self.classList.add(opts.activeCls);
           if (target.value) {
-            _self.classList.remove('valued');
+            _self.classList.remove('hasValue');
           }
         });
         // FOCUSOUT
         target.addEventListener('focusout', (event) => {
           _self.classList.remove(opts.activeCls);          
           if (target.value) {
-            _self.classList.add('valued');
+            _self.classList.add('hasValue');
           } else {
-            _self.classList.remove('valued');
+            _self.classList.remove('hasValue');
           }
         });
       }

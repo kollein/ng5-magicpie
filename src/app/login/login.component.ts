@@ -20,11 +20,11 @@ export class LoginComponent {
   };
   msg = {
     "error": {
-      "username": "Username is wrong!",
-      "password": "Password is wrong!"
+      "username": "Username is wrong.",
+      "password": "Password is wrong."
     },
     "success": {
-      "login": "Login successfully!"
+      "login": "Login successfully."
     }
   };
   public message = '';
@@ -38,18 +38,22 @@ export class LoginComponent {
   }
 
   login(): void {
-    let msgError = this.msg.error.username;
+    let msgError = '';
 
     for( let user of this.userData ) {
       if ( user.username === this.userInput.username ) {
-        msgError = '';
+        this.userInputState.username = true;
+                
         if ( user.password === this.userInput.password ) {
           msgError = '';
-          this.userInputState.password = true;          
+          this.userInputState.password = true;
         } else {
           msgError = this.msg.error.password;
           this.userInputState.password = false;
         }
+      } else {
+        msgError = this.msg.error.username;
+        this.userInputState.username = false;
       }
     }
 

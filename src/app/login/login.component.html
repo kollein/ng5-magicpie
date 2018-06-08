@@ -1,27 +1,29 @@
 <div class="login-container">
   <div class="login-wrapper ui-card">
     <form id="login">
-      <div class="gg-bound-control" data-bound-control>
-        <div class="bound-control-outer">
-          <div class="bound-control-inner">
-            <div class="bound-control-ipt">
-              <input class="control-ipt" type="text" name="username" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.username">
-              <div class="control-label">Username</div>
+
+      <div class="gg-bound-control" [ngClass]="{'hasError': !userInputState.username}" data-bound-control>
+        <div class="gg-bound-control-outer">
+          <div class="gg-bound-control-inner">
+            <div class="gg-bound-control-wrapper">
+              <input class="gg-bound-control-input" type="text" name="username" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.username">
+              <div class="gg-bound-control-label">Username</div>
             </div>
-            <div class="df-bottom-border"></div>
-            <div class="ef-bottom-border"></div>
+            <div class="gg-bound-control-df-bottom-border"></div>
+            <div class="gg-bound-control-ef-bottom-border"></div>
           </div>
         </div>
       </div>
-      <div class="gg-bound-control" [ngClass]="{'error': !userInputState.password}" data-bound-control>
-        <div class="bound-control-outer">
-          <div class="bound-control-inner">
-            <div class="bound-control-ipt">
-              <input class="control-ipt" type="password" name="password" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.password">
-              <div class="control-label">Password</div>
+
+      <div class="gg-bound-control" [ngClass]="{'hasError': !userInputState.password}" data-bound-control>
+        <div class="gg-bound-control-outer">
+          <div class="gg-bound-control-inner">
+            <div class="gg-bound-control-wrapper">
+              <input class="gg-bound-control-input" type="password" name="password" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.password">
+              <div class="gg-bound-control-label">Password</div>
             </div>
-            <div class="df-bottom-border"></div>
-            <div class="ef-bottom-border"></div>
+            <div class="gg-bound-control-df-bottom-border"></div>
+            <div class="gg-bound-control-ef-bottom-border"></div>
           </div>
         </div>
       </div>

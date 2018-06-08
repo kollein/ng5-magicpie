@@ -1,7 +1,148 @@
 /* IMPORT */
 @import "./assets/scss/chrome-color";
 @import "./assets/scss/variable";
+// Google Bound Control 08/06/2018
+%gg-bound-control-transform {
+  transform: scale(.75) translateY(-39px);
+}
+.gg-bound-control {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: content-box;
+  width: 100%;
+  font-size: 15px;
+  outline: none;
+  &-outer {
+    box-sizing: inherit;
+    height: 40px;
+    position: relative;
+    vertical-align: top;
+    padding-top: 24px;
+  }
+  &-inner {
+    box-sizing: inherit;
+    display: flex;
+    position: relative;
+    top: 14px;
+  }
+  &-wrapper {
+    box-sizing: inherit;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0%;
+    position: relative;
+  }
+  &-input {
+    box-sizing: inherit;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: transparent;
+    border: none;
+    display: block;
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    height: 24px;
+    line-height: 24px;
+    min-width: 0%;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    &:not([disabled]):focus ~ .gg-bound-control-label {
+      color: $google-blue-500;
+      @extend %gg-bound-control-transform;
+    }
+  }
+  &-label {
+    box-sizing: inherit;
+    color: $paper-grey-600;
+    transform-origin: bottom left;
+    transition: all .3s cubic-bezier(0.4,0,0.2,1);
+    transition-property: color,bottom,transform;
+    color: rgba(0,0,0,0.38);
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    pointer-events: none;
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    width: 100%;
+  }
+  &-df-bottom-border {
+    box-sizing: inherit;
+    background-color: rgba(0,0,0,0.12);
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid rgba(0,0,0,0);
+      pointer-events: none;
+    }
+  }
+  &-ef-bottom-border {
+    animation: quantumWizPaperInputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
+    transform: scaleX(0);
+    background-color: $google-blue-500;
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+  }
+  &.active-gg-bound-control {
+    .gg-bound-control-ef-bottom-border {
+      animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      
+      transform: scale(1);
+    }
+  }
+  &.hasValue {
+    .gg-bound-control-label {
+      @extend %gg-bound-control-transform;
+    }
+  }
+  &.hasError {
+    .gg-bound-control-input:not([disabled]):focus ~ .gg-bound-control-label {
+      color: $paper-red-a700;
+    }
+    .gg-bound-control-df-bottom-border {
+      background-color: $paper-red-a700;
+      height: 2px;
+    }
+    .gg-bound-control-ef-bottom-border {
+      background-color: $paper-red-a700;
+    }
+  }
+}
 
+@keyframes quantumWizPaperInputRemoveUnderline {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  } 
+}
+@keyframes quantumWizPaperInputAddUnderline {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  } 
+}
 /* RESET */
 *{
   box-sizing:border-box
@@ -317,7 +458,7 @@ body {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  .activeRipple & {
+  .active-ripple & {
     transform: translate(-50%,-50%) scale(2.2);
     visibility: visible;
     opacity: 1;
@@ -439,239 +580,4 @@ body {
           transition: transform 140ms ease-out;
       }
   }
-}
-
-/* FORM CONTROL */
-
-.bound-form-control {
-  position: relative;
-  padding-top: 24px;
-  font-size: 0;
-  line-height: 0;
-  -webkit-tap-highlight-color: transparent;
-  .form-control {
-      width: 100%;
-      height: 30px;
-      padding: 8px 0;
-      font-size: 16px;
-      line-height: 28px;
-      border: 0;
-      border-bottom: 1px solid #cfcfcf;
-      resize: none;
-      &:focus,
-      &.valued,
-      &.error {
-          border-bottom-color: transparent;
-          +.label-place-top {
-              color: $google-blue-500;
-              .label-title {
-                  transform: scale(0.75) translateY(-30px);
-                  height: 100%;
-                  display: block;
-                  top: 26px;
-              }
-              &:before,
-              &:after {
-                  width: 50%;
-                  background-color: $google-blue-500;
-              }
-          }
-      }
-      +.label-place-top {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          font-size: 16px;
-          line-height: 16px;
-          display: block;
-          width: 100%;
-          height: 100%;
-          color: #757575;
-          pointer-events: none;
-          backface-visibility: hidden;
-          filter: blur(0);
-          .label-title {
-              position: absolute;
-              bottom: 6px;
-              font-size: 16px;
-              line-height: 20px;
-              transform-origin: top left;
-              transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-              transition-property: color, transform;
-              display: block;
-              width: 100%;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-          }
-          &:before,
-          &:after {
-              display: block;
-              content: '';
-              height: 2px;
-              width: 0;
-              bottom: 0;
-              position: absolute;
-              background-color: transparent;
-              transition: 0.2s ease all;
-          }
-          &:before {
-              left: 50%;
-          }
-          &:after {
-              right: 50%;
-          }
-          .m-desc {
-              font-size: 12px;
-          }
-      }
-      &.valued {
-          +.label-place-top {
-              &:before,
-              &:after {
-                  background-color: $default;
-              }
-          }
-      }
-      &.error {
-          +.label-place-top {
-              &:before,
-              &:after {
-                  background-color: $warning;
-              }
-          }
-      }
-  }
-}
-
-%transform-shared {
-  transform: scale(.75) translateY(-39px);
-}
-.gg-bound-control {
-  -webkit-tap-highlight-color: transparent;
-  display: inline-block;
-  outline: none;
-  width: 100%;
-  box-sizing: content-box;
-  font-size: 15px;
-  .bound-control-outer {
-    box-sizing: inherit;
-    height: 40px;
-    position: relative;
-    vertical-align: top;
-    padding-top: 24px;
-  }
-  .bound-control-inner {
-    box-sizing: inherit;
-    display: flex;
-    position: relative;
-    top: 14px;
-  }
-  .bound-control-ipt {
-    box-sizing: inherit;
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 1;
-    min-width: 0%;
-    position: relative;
-  }
-  .control-ipt {
-    box-sizing: inherit;
-    -webkit-box-flex: 1;
-    flex-grow: 1;
-    flex-shrink: 1;
-    background-color: transparent;
-    border: none;
-    display: block;
-    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-    height: 24px;
-    line-height: 24px;
-    min-width: 0%;
-    outline: none;
-    margin: 0;
-    padding: 0;
-    &:not([disabled]):focus ~ .control-label {
-      color: #4285f4;
-      @extend %transform-shared;
-    }
-  }
-  &.valued .control-label {
-    @extend %transform-shared;
-  }
-  .control-label {
-    box-sizing: inherit;
-    color: #757575;
-    transform-origin: bottom left;
-    transition: all .3s cubic-bezier(0.4,0,0.2,1);
-    transition-property: color,bottom,transform;
-    color: rgba(0,0,0,0.38);
-    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-    font-size: 17px;
-    pointer-events: none;
-    position: absolute;
-    bottom: 3px;
-    left: 0;
-    width: 100%;
-  }
-  &.error .df-bottom-border {
-    background-color: #d50000;
-    height: 2px;
-  }
-  .df-bottom-border {
-    box-sizing: inherit;
-    background-color: rgba(0,0,0,0.12);
-    width: 100%;
-    height: 1px;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      border-bottom: 1px solid rgba(0,0,0,0);
-      pointer-events: none;
-    }
-  }
-  .ef-bottom-border {
-    animation: quantumWizPaperInputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
-    transform: scaleX(0);
-    background-color: #4285f4;
-    width: 100%;
-    height: 2px;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    margin: 0;
-    padding: 0;
-  }
-  &.active-ggBoundControl .ef-bottom-border {
-    animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      
-    transform: scale(1);
-  }
-  
-}
-
-@keyframes quantumWizPaperInputRemoveUnderline {
-  0% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scaleX(1);
-    opacity: 0;
-  } 
-}
-@keyframes quantumWizPaperInputAddUnderline {
-  0% {
-    transform: scaleX(0);
-  }
-  100% {
-    transform: scaleX(1);
-  } 
 }
