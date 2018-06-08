@@ -38,8 +38,13 @@ export class LoginComponent {
     
     this.playerService.getPlayer()
       .subscribe(resData => {
-        this.userData = resData.users
+        this.userData = resData.users;
       });
+  }
+
+  ngAfterViewInit() {
+    // STO to do after View rendered and MagicPie invoked all events
+    setTimeout(() => this.username_input_el.nativeElement.focus(), 0);
   }
 
   login(): void {

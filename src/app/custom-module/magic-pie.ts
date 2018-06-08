@@ -131,7 +131,7 @@ export class MagicPie {
       groupEvents: ['focusout', 'blur']
     }
 
-    setTimeout(() => {
+    this.a.addEventListener('DOMContentLoaded', () => {
       let boundControls = this.d.querySelectorAll(`[${opts.data_container}]`);
 
       boundControls.forEach(_self => {
@@ -174,6 +174,6 @@ export class MagicPie {
          el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
         }
       }, true);
-    }, 0);
+    });
   }
 }
