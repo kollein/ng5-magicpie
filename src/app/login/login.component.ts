@@ -16,7 +16,8 @@ export class LoginComponent {
   };
   public userInputState = {
     "username": true,
-    "password": true
+    "password": true,
+    "onProgress": false
   };
   msg = {
     "error": {
@@ -47,6 +48,7 @@ export class LoginComponent {
         if ( user.password === this.userInput.password ) {
           msgError = '';
           this.userInputState.password = true;
+          this.userInputState.onProgress = true;
         } else {
           msgError = this.msg.error.password;
           this.userInputState.password = false;

@@ -8,9 +8,10 @@
   align-items: center;
 }
 .login-wrapper {
+  position: relative;
   width: 450px;
   padding: 16px;
-  border-radius: 2px;
+  border-radius: 8px;
 }
 .error-msg-line {
   color: $danger;
@@ -22,7 +23,7 @@
   margin-left: auto;
   font-weight: 700;
   padding: 0 12px;
-  min-width: 188px;
+  min-width: 88px;
   height: 36px;
   line-height: 36px;
   .text {

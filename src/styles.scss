@@ -1,148 +1,6 @@
 /* IMPORT */
 @import "./assets/scss/chrome-color";
 @import "./assets/scss/variable";
-// Google Bound Control 08/06/2018
-%gg-bound-control-transform {
-  transform: scale(.75) translateY(-39px);
-}
-.gg-bound-control {
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: content-box;
-  width: 100%;
-  font-size: 15px;
-  outline: none;
-  &-outer {
-    box-sizing: inherit;
-    height: 40px;
-    position: relative;
-    vertical-align: top;
-    padding-top: 24px;
-  }
-  &-inner {
-    box-sizing: inherit;
-    display: flex;
-    position: relative;
-    top: 14px;
-  }
-  &-wrapper {
-    box-sizing: inherit;
-    display: flex;
-    flex-grow: 1;
-    flex-shrink: 1;
-    min-width: 0%;
-    position: relative;
-  }
-  &-input {
-    box-sizing: inherit;
-    -webkit-box-flex: 1;
-    flex-grow: 1;
-    flex-shrink: 1;
-    background-color: transparent;
-    border: none;
-    display: block;
-    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-    height: 24px;
-    line-height: 24px;
-    min-width: 0%;
-    outline: none;
-    margin: 0;
-    padding: 0;
-    &:not([disabled]):focus ~ .gg-bound-control-label {
-      color: $google-blue-500;
-      @extend %gg-bound-control-transform;
-    }
-  }
-  &-label {
-    box-sizing: inherit;
-    color: $paper-grey-600;
-    transform-origin: bottom left;
-    transition: all .3s cubic-bezier(0.4,0,0.2,1);
-    transition-property: color,bottom,transform;
-    color: rgba(0,0,0,0.38);
-    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
-    font-size: 17px;
-    pointer-events: none;
-    position: absolute;
-    bottom: 3px;
-    left: 0;
-    width: 100%;
-  }
-  &-df-bottom-border {
-    box-sizing: inherit;
-    background-color: rgba(0,0,0,0.12);
-    width: 100%;
-    height: 1px;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    margin: 0;
-    padding: 0;
-    &:before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      border-bottom: 1px solid rgba(0,0,0,0);
-      pointer-events: none;
-    }
-  }
-  &-ef-bottom-border {
-    animation: quantumWizPaperInputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
-    transform: scaleX(0);
-    background-color: $google-blue-500;
-    width: 100%;
-    height: 2px;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    margin: 0;
-    padding: 0;
-  }
-  &.active-gg-bound-control {
-    .gg-bound-control-ef-bottom-border {
-      animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      
-      transform: scale(1);
-    }
-  }
-  &.hasValue {
-    .gg-bound-control-label {
-      @extend %gg-bound-control-transform;
-    }
-  }
-  &.hasError {
-    .gg-bound-control-input:not([disabled]):focus ~ .gg-bound-control-label {
-      color: $paper-red-a700;
-    }
-    .gg-bound-control-df-bottom-border {
-      background-color: $paper-red-a700;
-      height: 2px;
-    }
-    .gg-bound-control-ef-bottom-border {
-      background-color: $paper-red-a700;
-    }
-  }
-}
-
-@keyframes quantumWizPaperInputRemoveUnderline {
-  0% {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scaleX(1);
-    opacity: 0;
-  } 
-}
-@keyframes quantumWizPaperInputAddUnderline {
-  0% {
-    transform: scaleX(0);
-  }
-  100% {
-    transform: scaleX(1);
-  } 
-}
 /* RESET */
 *{
   box-sizing:border-box
@@ -579,5 +437,292 @@ body {
           transform: scale(1) rotate(45deg);
           transition: transform 140ms ease-out;
       }
+  }
+}
+
+// Google Bound Control 08/06/2018
+%gg-bound-control-transform {
+  transform: scale(.75) translateY(-39px);
+}
+.gg-bound-control {
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: content-box;
+  width: 100%;
+  font-size: 15px;
+  outline: none;
+  &-outer {
+    box-sizing: inherit;
+    height: 40px;
+    position: relative;
+    vertical-align: top;
+    padding-top: 24px;
+  }
+  &-inner {
+    box-sizing: inherit;
+    display: flex;
+    position: relative;
+    top: 14px;
+  }
+  &-wrapper {
+    box-sizing: inherit;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0%;
+    position: relative;
+  }
+  &-input {
+    box-sizing: inherit;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    flex-shrink: 1;
+    background-color: transparent;
+    border: none;
+    display: block;
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    height: 24px;
+    line-height: 24px;
+    min-width: 0%;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    &:not([disabled]):focus ~ .gg-bound-control-label {
+      color: $google-blue-500;
+      @extend %gg-bound-control-transform;
+    }
+  }
+  &-label {
+    box-sizing: inherit;
+    color: $paper-grey-600;
+    transform-origin: bottom left;
+    transition: all .3s cubic-bezier(0.4,0,0.2,1);
+    transition-property: color,bottom,transform;
+    color: rgba(0,0,0,0.38);
+    font: 400 17px Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
+    font-size: 17px;
+    pointer-events: none;
+    position: absolute;
+    bottom: 3px;
+    left: 0;
+    width: 100%;
+  }
+  &-df-bottom-border {
+    box-sizing: inherit;
+    background-color: rgba(0,0,0,0.12);
+    width: 100%;
+    height: 1px;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      border-bottom: 1px solid rgba(0,0,0,0);
+      pointer-events: none;
+    }
+  }
+  &-ef-bottom-border {
+    animation: quantumWizPaperInputRemoveUnderline .3s cubic-bezier(0.4,0,0.2,1);
+    transform: scaleX(0);
+    background-color: $google-blue-500;
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    margin: 0;
+    padding: 0;
+  }
+  &.active-gg-bound-control {
+    .gg-bound-control-ef-bottom-border {
+      animation: quantumWizPaperInputAddUnderline .3s cubic-bezier(0.4,0,0.2,1);      
+      transform: scale(1);
+    }
+  }
+  &.hasValue {
+    .gg-bound-control-label {
+      @extend %gg-bound-control-transform;
+    }
+  }
+  &.hasError {
+    .gg-bound-control-input:not([disabled]):focus ~ .gg-bound-control-label {
+      color: $paper-red-a700;
+    }
+    .gg-bound-control-df-bottom-border {
+      background-color: $paper-red-a700;
+      height: 2px;
+    }
+    .gg-bound-control-ef-bottom-border {
+      background-color: $paper-red-a700;
+    }
+  }
+}
+
+@keyframes quantumWizPaperInputRemoveUnderline {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  } 
+}
+@keyframes quantumWizPaperInputAddUnderline {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  } 
+}
+
+/* Google Progress Bar */
+.gg-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  opacity: 0;
+  &-outer {
+    position: relative;
+    width: 100%;
+    height: 8px;
+    border-radius: 8px 8px 0 0;
+    transform: translateZ(0);
+    transition: opacity 250ms linear;
+    overflow: hidden;
+  }
+  &-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    transform-origin: top left;
+    transition: transform 250ms ease;
+  }
+  &-slide-piece {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: none;
+    transform-origin: top left;
+    animation: none;
+    &.effect-1 {
+      animation: primary-indeterminate-translate 2s infinite linear;
+      transform: scaleX(0);
+      .gg-progress-bar-bullet {
+        animation: primary-indeterminate-scale 2s infinite linear;
+      }
+    }
+    &.effect-2 {
+      animation: auxiliary-indeterminate-translate 2s infinite linear;
+      visibility: visible;
+      .gg-progress-bar-bullet {
+        animation: auxiliary-indeterminate-scale 2s infinite linear;
+      }
+    }
+  }
+  &-bullet {
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: #ff9800;
+  }
+  &.isPaused {
+    .gg-progress-bar-slide-piece.effect-1,
+    .gg-progress-bar-slide-piece.effect-2,
+    .gg-progress-bar-bullet {
+      animation-play-state: paused;
+    }
+  }
+  &.active-gg-progress-bar {
+    opacity: 1;
+    .gg-progress-bar-slide-piece.effect-1,
+    .gg-progress-bar-slide-piece.effect-2,
+    .gg-progress-bar-bullet {
+      animation-play-state: initial;
+    }
+  }
+}
+
+@keyframes primary-indeterminate-translate {
+  0% {
+    transform: translateX(-145.166611%);
+  }
+  20% {
+    animation-timing-function: cubic-bezier(.5,0,.701732,.495819);
+    transform: translateX(-145.166611%);
+  }
+  59.15% {
+    animation-timing-function: cubic-bezier(.302435,.381352,.55,.956352);
+    transform: translateX(-61.495191%);
+  }
+  100% {
+    transform: translateX(55.444446%);
+  }
+}
+
+@keyframes auxiliary-indeterminate-translate {
+  0% {
+    animation-timing-function: cubic-bezier(.15,0,.515058,.409685);
+    transform: translateX(-54.888891%);
+  }
+  25% {
+    animation-timing-function: cubic-bezier(.310330,.284058,.8,.733712);
+    transform: translateX(-17.236978%);
+  }
+  48.35% {
+    animation-timing-function: cubic-bezier(.4,.627035,.6,.902026);
+    transform: translateX(29.497274%);
+  }
+  100% {
+    transform: translateX(105.388891%);
+  }
+}
+
+@keyframes primary-indeterminate-scale {
+
+  0% {
+    transform: scaleX(.08);
+  }
+  36.65% {
+    animation-timing-function: cubic-bezier(.334731,.124820,.785844,1);
+    transform: scaleX(.08);
+  }
+  69.15% {
+    animation-timing-function: cubic-bezier(.06,.11,.6,1);
+    transform: scaleX(.661479);
+  }
+  100% {
+    transform: scaleX(.08);
+  }
+}
+
+@keyframes auxiliary-indeterminate-scale {
+  0% {
+    animation-timing-function: cubic-bezier(.205028,.057051,.576610,.453971);
+    transform: scaleX(.08);
+  }
+
+  19.15% {
+    animation-timing-function: cubic-bezier(.152313,.196432,.648374,1.004315);
+    transform: scaleX(.457104);
+  }
+  44.15% {
+    animation-timing-function: cubic-bezier(.257759,.003163,.211762,1.381790);
+    transform: scaleX(.727960);
+  }
+  100% {
+    transform: scaleX(.08);
   }
 }
