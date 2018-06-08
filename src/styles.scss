@@ -638,19 +638,19 @@ body {
     height: 100%;
     background-color: #ff9800;
   }
-  &.isPaused {
-    .gg-progress-bar-slide-piece.effect-1,
-    .gg-progress-bar-slide-piece.effect-2,
-    .gg-progress-bar-bullet {
-      animation-play-state: paused;
-    }
-  }
   &.active-gg-progress-bar {
     opacity: 1;
     .gg-progress-bar-slide-piece.effect-1,
     .gg-progress-bar-slide-piece.effect-2,
     .gg-progress-bar-bullet {
       animation-play-state: initial;
+    }
+  }
+  &.isPaused {
+    .gg-progress-bar-slide-piece.effect-1,
+    .gg-progress-bar-slide-piece.effect-2,
+    .gg-progress-bar-bullet {
+      animation-play-state: paused;
     }
   }
 }

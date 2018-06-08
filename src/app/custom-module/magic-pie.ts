@@ -28,7 +28,7 @@ export class MagicPie {
       rippleCls: "ripple",
       activeCls: "active-ripple",
       mouseEvents: ['mouseup', 'mouseleave'],
-      delayBeforeEndTour: 100,
+      delayBeforeEndTour: 150,
       cheatKeys: {
         happyEnding: 'happy-ending'
       }
