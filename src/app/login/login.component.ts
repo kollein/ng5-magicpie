@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 import { PlayerService } from '../service/player.service';
 import { Subscriber } from 'rxjs/Subscriber';
@@ -9,6 +9,10 @@ import { Subscriber } from 'rxjs/Subscriber';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+
+  @ViewChild('usernameInput') username_input_el: ElementRef;
+  @ViewChild('passwordInput') password_input_el: ElementRef;
+
   public userData: Array<any>;
   public userInput = {
     "username": "",
@@ -50,12 +54,16 @@ export class LoginComponent {
           this.userInputState.password = true;
           this.userInputState.onProgress = true;
         } else {
+          this.password_input_el.nativeElement.focus();          
           msgError = this.msg.error.password;
           this.userInputState.password = false;
+          this.userInputState.onProgress = false;          
         }
       } else {
+        this.username_input_el.nativeElement.focus();
         msgError = this.msg.error.username;
         this.userInputState.username = false;
+        this.userInputState.onProgress = false;   
       }
     }
 

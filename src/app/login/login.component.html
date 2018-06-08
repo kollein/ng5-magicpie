@@ -14,7 +14,7 @@
         <div class="gg-bound-control-outer">
           <div class="gg-bound-control-inner">
             <div class="gg-bound-control-wrapper">
-              <input class="gg-bound-control-input" type="text" name="username" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.username">
+              <input class="gg-bound-control-input" type="text" #usernameInput spellcheck="false" autocomplete="off" [(ngModel)]="userInput.username" name="username">
               <div class="gg-bound-control-label">Username</div>
             </div>
             <div class="gg-bound-control-df-bottom-border"></div>
@@ -27,7 +27,7 @@
         <div class="gg-bound-control-outer">
           <div class="gg-bound-control-inner">
             <div class="gg-bound-control-wrapper">
-              <input class="gg-bound-control-input" type="password" name="password" spellcheck="false" autocomplete="off" [(ngModel)]="userInput.password">
+              <input class="gg-bound-control-input" type="password" #passwordInput spellcheck="false" autocomplete="off" [(ngModel)]="userInput.password" name="password">
               <div class="gg-bound-control-label">Password</div>
             </div>
             <div class="gg-bound-control-df-bottom-border"></div>
