@@ -16,5 +16,9 @@ export class AppComponent {
     magicPie.restartFormControl();
     // RIPPLE WAVE: invoking
     magicPie.restartRippleWave();
+    // TOGGLE PAPER: invoking
+    magicPie.checkStatusOnElement({
+      strSelector: '.toggle-container .toggle-bar'
+    });
   }
 }

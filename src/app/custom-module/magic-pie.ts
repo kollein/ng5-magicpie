@@ -176,4 +176,86 @@ export class MagicPie {
       }, true);
     });
   }
+
+  showPaperRipple(el_container, status, eventType) {
+    let opts = {
+      paperRippleEl: 'paper-ripple'
+    }
+    let myRipple = el_container.querySelector('.' + opts.paperRippleEl), timer;
+    // CHECK EVENT TO SHOW OR HIDE
+    if ( eventType == 'mousedown' ) {
+      clearTimeout(timer);
+      timer = 0;
+      myRipple.style.opacity = 1;
+      // SET SCALE BY parentNode
+      var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
+          scale_n = 1;
+      if( myRipple_parent_height == 16 ) {
+        scale_n = 2.5; 
+      }
+      myRipple.style.transform = 'scale(' + scale_n + ')';
+    } else {
+      timer = setTimeout(() => {
+        myRipple.style.opacity = 0;
+        myRipple.style.transform = 'scale(0)';
+      }, 100);
+    }
+  }
+
+  checkStatusOnElement(options) {
+    let opts = {
+      ariaChecked: 'aria-checked'
+    }
+    setTimeout(() => {
+      let el_checkbox_container = this.d.querySelectorAll(options.strSelector);
+
+      for (let index in el_checkbox_container) {
+        // CHECK HAS PROP
+        if (el_checkbox_container.hasOwnProperty(index)) {
+          // MOUSEDOWN ON
+          el_checkbox_container[index].addEventListener('mousedown', (event) => {
+            event.preventDefault();
+            let target = event.target;
+            // @.toggle-container
+            let el_container = target.parentNode;
+            // WITH @status: 0 -> false, 1 -> true
+            let status = 0;
+
+            if (el_container.getAttribute(opts.ariaChecked) == 'true') {
+              status = 0;
+              el_container.setAttribute(opts.ariaChecked, 'false');
+            } else {
+              status = 1;
+              el_container.setAttribute(opts.ariaChecked, 'true');
+            }
+            // GATHER BY MAP DATA
+            let streamDATA = {
+              "data-value": status
+            };
+            for (let k in options.mapDATA) {
+              streamDATA[options.mapDATA[k]] = el_container.getAttribute(options.mapDATA[k]);
+            }
+
+            // SHOW EFFECT RIPPLE
+            this.showPaperRipple(el_container, status, event.type);
+            // INVOKE CALLBACK
+            if (options.callback) {
+              // TRANSFER : el_container, status TO CALLBACK
+              options.callback(el_container, streamDATA);
+            }
+          });
+          // MOUSEUP ON
+          el_checkbox_container[index].addEventListener('mouseup', (event) => {
+            let target = event.target;          
+            this.showPaperRipple(target.parentNode, status, event.type);
+          });
+          // MOUSELEAVE ON
+          el_checkbox_container[index].addEventListener('mouseleave', (event) => {
+            let target = event.target;          
+            this.showPaperRipple(target.parentNode, status, event.type);
+          });
+        }
+      }
+    }
+  }
 }

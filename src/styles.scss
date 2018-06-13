@@ -1,6 +1,6 @@
 /* IMPORT */
-@import "./assets/scss/chrome-color";
-@import "./assets/scss/variable";
+@import './assets/scss/chrome-color';
+@import './assets/scss/variable';
 /* RESET */
 *{
   box-sizing:border-box
@@ -213,7 +213,6 @@ body {
 
 /* BUTTON , NOTE: ._(prefix)classname are effects*/
 .btn {
-  -webkit-user-select: none;
   transition: background .8s;
   border: 0;
   border-radius: 3px;
@@ -344,56 +343,104 @@ body {
 
 .toggle-container {
   z-index: 1;
-  position: relative;
-  display: inline-block;
+  position:relative;
+  display:inline-block;
   width: 40px;
   height: 40px;
   line-height: 0;
   font-size: 0;
-  .toggleBar {
+  .toggle-bar {
+    position:absolute;
+    cursor:pointer;
+    top: calc(50% - 6px);
+    left: 0;
+    right:0;
+    bottom:0;
+    width: 28px;
+    height: 12px;
+    background-color: rgba(0,0,0,.4);
+    transition: background-color .4s;
+    border-radius: 8px;
+    .circle{
+      display: block;
       position: absolute;
-      cursor: pointer;
-      top: calc(50% - 6px);
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 28px;
-      height: 12px;
-      background-color: rgba(0, 0, 0, .4);
-      transition: background-color .4s;
-      border-radius: 8px;
-      .circle {
-          display: block;
-          position: absolute;
-          top: -3px;
-          left: -4px;
-          height: 16px;
-          width: 16px;
-          border-radius: 50%;
-          box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.6);
-          transition: transform linear .08s, background-color linear .08s;
-          background-color: #fff;
-      }
+      top: -3px;
+      left: -4px;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.6);
+      transition: transform linear .08s, background-color linear .08s;
+      background-color: #fff;
+    }
   }
-  &[aria-check="true"] .toggleBar {
-      background-color: rgba(66, 133, 244, .4);
+  &[aria-checked="true"] .toggle-bar {
+    background-color: rgba(66, 133, 244, .4);
+    .circle {
+      transform: translateX(18px);
+      background-color: rgba(66, 133, 244, 1);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+    }
+    &.green {
+      background-color: rgba(76, 175, 80, .4);
       .circle {
-          transform: translateX(18px);
-          background-color: rgba(66, 133, 244, 1);
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+        background-color: rgba(76, 175, 80, 1);
       }
-      &.green {
-          background-color: rgba(76, 175, 80, .4);
-          .circle {
-              background-color: rgba(76, 175, 80, 1);
-          }
+    }
+    &.red {
+      background-color: rgba(244, 67, 54, .4);
+      .circle {
+        background-color: rgba(244, 67, 54, 1);
       }
-      &.red {
-          background-color: rgba(244, 67, 54, .4);
-          .circle {
-              background-color: rgba(244, 67, 54, 1);
-          }
+    }
+    &.orange {
+      background-color: rgba(251, 188, 5, .4);
+      .circle {
+        background-color: rgba(251, 188, 5, 1);
       }
+    }
+    &.yellow {
+      background-color: rgba(255, 250, 93, .4);
+      .circle {
+        background-color: rgba(255, 250, 93, 1);
+      }
+    }
+    &.indigo {
+      background-color: rgba(63, 81, 181, .4);
+      .circle {
+        background-color: rgba(63, 81, 181, 1);
+      }
+    }
+    &.violet {
+      background-color: rgba(148, 0, 211, .4);
+      .circle {
+        background-color: rgba(148, 0, 211, 1);
+      }
+    }
+    &.pink {
+      background-color: rgba(255, 192, 203, .4);
+      .circle {
+        background-color: rgba(255, 192, 203, 1);
+      }
+    }
+    &.brown {
+      background-color: rgba(165, 42, 42, .4);
+      .circle {
+        background-color: rgba(165, 42, 42, 1);
+      }
+    }
+    &.chartreuse {
+      background-color: rgba(127, 255, 0, .4);
+      .circle {
+        background-color: rgba(127, 255, 0, 1);
+      }
+    }
+    &.aqua {
+      background-color: rgba(0, 255, 255, .4);
+      .circle {
+        background-color: rgba(0, 255, 255, 1);
+      }
+    }
   }
 }
 
@@ -429,7 +476,7 @@ body {
           width: 36%;
       }
   }
-  &[aria-check="true"] .checkbox {
+  &[aria-checked="true"] .checkbox {
       background-color: $google-blue-500;
       border-color: $google-blue-500;
       &:after {

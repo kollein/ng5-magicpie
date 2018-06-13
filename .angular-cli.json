@@ -5,6 +5,11 @@
   },
   "apps": [
     {
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "assets/scss"
+        ]
+      },
       "root": "src",
       "outDir": "dist",
       "assets": [
