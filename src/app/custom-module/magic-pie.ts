@@ -213,7 +213,7 @@ export class MagicPie {
       for (let index in el_checkbox_container) {
         // CHECK HAS PROP
         if (el_checkbox_container.hasOwnProperty(index)) {
-          // MOUSEDOWN ON
+          // MOUSEDOWN
           el_checkbox_container[index].addEventListener('mousedown', (event) => {
             event.preventDefault();
             let target = event.target;
@@ -245,12 +245,12 @@ export class MagicPie {
               options.callback(el_container, streamDATA);
             }
           });
-          // MOUSEUP ON
+          // MOUSEUP
           el_checkbox_container[index].addEventListener('mouseup', (event) => {
             let target = event.target;          
             this.showPaperRipple(target.parentNode, status, event.type);
           });
-          // MOUSELEAVE ON
+          // MOUSELEAVE
           el_checkbox_container[index].addEventListener('mouseleave', (event) => {
             let target = event.target;          
             this.showPaperRipple(target.parentNode, status, event.type);

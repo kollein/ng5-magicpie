@@ -20,5 +20,9 @@ export class AppComponent {
     magicPie.checkStatusOnElement({
       strSelector: '.toggle-container .toggle-bar'
     });
+    // CHECKBOX PAPER: invoking
+    magicPie.checkStatusOnElement({
+      strSelector: '.checkbox-container .checkbox'
+    });
   }
 }
