@@ -206,6 +206,7 @@ export class MagicPie {
     let opts = {
       ariaChecked: 'aria-checked'
     }
+
     setTimeout(() => {
       let el_checkbox_container = this.d.querySelectorAll(options.strSelector);
 
@@ -256,6 +257,6 @@ export class MagicPie {
           });
         }
       }
-    }
+    });
   }
 }
