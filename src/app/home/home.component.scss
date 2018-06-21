@@ -1,0 +1,49 @@
+// position: static;
+
+// position: relative;
+
+// position: absolute;
+
+// position: fixed;
+
+.margin-top {
+  margin-top: 100px;
+  background-color: green;
+  height: 300px;
+}
+
+.container {
+  margin: auto;
+  background-color: red;
+  height: 300px;
+  padding: 0 10px 0 10px;
+  
+  .grid-block-video {
+
+  }
+  .grid-vertical-block-video {
+
+  }
+  .item {
+    float: left;
+    width: 20%;
+    color: white;
+    text-align: center;
+    .item-inner {
+      margin: 10px 5px 0 5px;
+      background-color: blue;
+      .title {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+
+    .item {
+      width: 33.33%;
+    }
+  }
+}

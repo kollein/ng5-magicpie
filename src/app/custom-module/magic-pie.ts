@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { locateHostElement } from "@angular/core/src/render3/instructions";
 
 @Injectable()
 export class MagicPie {
@@ -138,7 +139,6 @@ export class MagicPie {
 
         let inputElement = _self.querySelector(`.${opts.control_ipt_cls}`);
         inputElement.addEventListener('focusin', (event) => {
-          console.log('it cused');
           _self.classList.add(opts.activeCls);
           if (inputElement.value) {
             _self.classList.remove('hasValue');
@@ -177,13 +177,13 @@ export class MagicPie {
     });
   }
 
-  showPaperRipple(el_container, status, eventType) {
+  showPaperRipple(el_container, eventType) {
     let opts = {
       paperRippleEl: 'paper-ripple'
     }
     let myRipple = el_container.querySelector('.' + opts.paperRippleEl), timer;
     // CHECK EVENT TO SHOW OR HIDE
-    if ( eventType == 'mousedown' ) {
+    if ( eventType === 'mousedown' ) {
       clearTimeout(timer);
       timer = 0;
       myRipple.style.opacity = 1;
@@ -208,37 +208,62 @@ export class MagicPie {
     }
 
     setTimeout(() => {
-      let el_checkbox_container = this.d.querySelectorAll(options.strSelector);
+      let switchEle = this.d.querySelectorAll(options.strSelector);
+      let switchStatus = (el_container) => {
+        if (el_container.getAttribute(opts.ariaChecked) === 'true') {
+          el_container.setAttribute(opts.ariaChecked, 'false');
+        } else {
+          el_container.setAttribute(opts.ariaChecked, 'true');
+        }
+      }
 
-      for (let index in el_checkbox_container) {
+      for (let index in switchEle) {
         // CHECK HAS PROP
-        if (el_checkbox_container.hasOwnProperty(index)) {
+        if (switchEle.hasOwnProperty(index)) {
           // MOUSEDOWN
-          el_checkbox_container[index].addEventListener('mousedown', (event) => {
-            event.preventDefault();
+          switchEle[index].addEventListener('mousedown', (event) => {
+            event.preventDefault();            
             let target = event.target;
-            // @.toggle-container
+            let startX = event.pageX;
             let el_container = target.parentNode;
-            // WITH @status: 0 -> false, 1 -> true
-            let status = 0;
 
-            if (el_container.getAttribute(opts.ariaChecked) == 'true') {
-              status = 0;
-              el_container.setAttribute(opts.ariaChecked, 'false');
+            if (el_container.hasAttribute(opts.ariaChecked)) {
+              // @.toggle-bar clicked
+              switchStatus(el_container);
+
             } else {
-              status = 1;
-              el_container.setAttribute(opts.ariaChecked, 'true');
+              // @.circle clicked
+              let el_container = this.getClosestTargetByAttrName(event.path, opts.ariaChecked);
+              let switchStatusByDragging = (event1) => {
+                
+                if ( startX !== 'stopped' ) {
+                  let distance = Math.abs(event1.pageX - startX);
+                  console.log(distance);
+                  
+                  if ( distance > 4 ) {
+                    console.log('dragged');
+                    startX = 'stopped';
+                    switchStatus(el_container);
+                  }
+                }
+              }
+
+              target.addEventListener('mousemove', switchStatusByDragging);
+              window.addEventListener('mouseup', () => {
+                target.removeEventListener('mousemove', switchStatusByDragging);
+              });
+
             }
             // GATHER BY MAP DATA
             let streamDATA = {
-              "data-value": status
+              "data-value": false
             };
             for (let k in options.mapDATA) {
               streamDATA[options.mapDATA[k]] = el_container.getAttribute(options.mapDATA[k]);
             }
 
             // SHOW EFFECT RIPPLE
-            this.showPaperRipple(el_container, status, event.type);
+            this.showPaperRipple(el_container, event.type);
             // INVOKE CALLBACK
             if (options.callback) {
               // TRANSFER : el_container, status TO CALLBACK
@@ -246,14 +271,14 @@ export class MagicPie {
             }
           });
           // MOUSEUP
-          el_checkbox_container[index].addEventListener('mouseup', (event) => {
+          switchEle[index].addEventListener('mouseup', (event) => {
             let target = event.target;          
-            this.showPaperRipple(target.parentNode, status, event.type);
+            this.showPaperRipple(target.parentNode, event.type);
           });
           // MOUSELEAVE
-          el_checkbox_container[index].addEventListener('mouseleave', (event) => {
+          switchEle[index].addEventListener('mouseleave', (event) => {
             let target = event.target;          
-            this.showPaperRipple(target.parentNode, status, event.type);
+            this.showPaperRipple(target.parentNode, event.type);
           });
         }
       }
