@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 
 import { PlayerService } from '../service/player.service';
+import { MessageService } from '../service/message.service';
 import { Subscriber } from 'rxjs/Subscriber';
 
 @Component({
@@ -34,7 +35,10 @@ export class LoginComponent {
   };
   public message = '';
 
-  constructor(private playerService: PlayerService) {
+  constructor(
+    private playerService: PlayerService,
+    private messageService: MessageService
+  ) {
     
     this.playerService.getPlayer()
       .subscribe(resData => {
@@ -48,6 +52,8 @@ export class LoginComponent {
   }
 
   login(): void {
+    console.log(this.messageService.getMessage());
+    
     let msgError = '';
 
     for( let user of this.userData ) {

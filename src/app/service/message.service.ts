@@ -8,6 +8,10 @@ export class MessageService {
     this.messages.push(message);
   }
 
+  getMessage() {
+    return this.messages;
+  }
+
   clear() {
     this.messages = [];
   }

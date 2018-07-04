@@ -3,8 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, tap } from 'rxjs/operators';
-
+import { catchError, tap, timeout } from 'rxjs/operators';
 import { MessageService } from './message.service';
 
 const httpOptions = {
@@ -14,7 +13,9 @@ const httpOptions = {
 @Injectable()
 export class PlayerService {
 
-  private playerUrl = '../assets/data/player.json';  // URL to web api
+  // URL to web api
+  // private playerUrl = '../assets/data/player.json';
+  private playerUrl = 'http://httpstat.us/200?sleep=500 '; // to test Timeout
 
   constructor(
     private http: HttpClient,
@@ -24,7 +25,8 @@ export class PlayerService {
   getPlayer (): Observable<any> {
     return this.http.get<any>(this.playerUrl)
       .pipe(
-        tap(heroes => this.log(`fetched getPlayer`)),
+        tap(players => this.log(`fetched getPlayer`)),
+        timeout(900),
         catchError(this.handleError('getPlayer', []))
       );
   }
