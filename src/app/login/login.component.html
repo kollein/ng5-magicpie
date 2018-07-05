@@ -1,5 +1,4 @@
 <div class="login-container">
-  <img src="./assets/img/sprite.png" alt="no">
   <div class="login-wrapper ui-card">
 
     <div class="gg-progress-bar" [ngClass]="{'active-gg-progress-bar': userInputState.onProgress}">
@@ -53,6 +52,7 @@
       <div class="error-msg-line">{{message}}</div>
       <div class="row">
         <div class="btn btn-default btn-blue login-btn" data-ripple (click)="login()">
+          <div class="btn-text-mask"></div>
           <span class="text">Login</span>
         </div>
       </div>

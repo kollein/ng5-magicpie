@@ -226,6 +226,7 @@ body {
   position: relative;
   text-align: center;
   text-transform: uppercase;
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 .btn-default {
@@ -242,7 +243,14 @@ body {
     background-image: radial-gradient(circle farthest-side,rgba(0,0,0,0.12),rgba(0,0,0,0.12) 80%,rgba(0,0,0,0) 100%);
   }
 }
-
+.btn-text-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: transparent;
+}
 /*** EFFECTS ***/
 
 /* TOOLTIP */

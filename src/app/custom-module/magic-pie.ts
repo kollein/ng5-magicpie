@@ -5,10 +5,48 @@ import { locateHostElement } from "@angular/core/src/render3/instructions";
 export class MagicPie {
   a;
   d;
+  eventMap = {
+    "desktop": {
+      mousedown: "mousedown",
+      mouseup: "mouseup",
+      mousemove: "mousemove",
+      mouseleave: "mouseleave"
+    },
+    "mobile": {
+      mousedown: "touchstart",
+      mouseup: "touchend",
+      mousemove: "touchmove",
+      mouseleave: "touchcancel"
+    }
+  }
+  eventList;
 
   constructor() {
     this.a = window;
     this.d = this.a.document;
+    // switch Event List
+    this.eventList = (typeof window.orientation !== 'undefined') ? this.eventMap.mobile : this.eventMap.desktop;
+  }
+
+  getClientXY(e) {
+    let client = {
+      x: false,
+      y: false,
+      pageX: false,
+      pageY: false
+    }
+    if (e.type.search('touch') > -1) {
+      client.x = e.touches[0].clientX,
+      client.y = e.touches[0].clientY;
+      client.pageX = e.changedTouches[0].pageX;
+      client.pageY = e.changedTouches[0].pageY;
+    } else {
+      client.x = e.clientX;
+      client.y = e.clientY;
+      client.pageX = e.pageX;
+      client.pageY = e.pageY;
+    }
+    return client;
   }
 
   getClosestTargetByAttrName(path, attrName) {
@@ -28,7 +66,7 @@ export class MagicPie {
       data_container: "data-ripple",
       rippleCls: "ripple",
       activeCls: "active-ripple",
-      mouseEvents: ['mouseup', 'mouseleave'],
+      mouseEvents: [this.eventList.mouseup, this.eventList.mouseleave],
       delayBeforeEndTour: 150,
       cheatKeys: {
         happyEnding: 'happy-ending'
@@ -45,7 +83,8 @@ export class MagicPie {
         ele.prepend(rippleDiv);
       });
 
-      this.d.addEventListener('mousedown', (event) => {
+      this.d.addEventListener(this.eventList.mousedown, (event) => {
+        
         let isRipple = false,
             target = event.target;
         if ( target.hasAttribute(opts.data_container) === true ) {
@@ -71,9 +110,11 @@ export class MagicPie {
               FIND POSITION OF @this
               Note: clientX, clientY: get position with screen-captured as what you see on
             */
+            let client = <any>this.getClientXY(event);
+            
             let offs = _self.getBoundingClientRect(),
-              x = event.clientX - offs.left,
-              y = event.clientY - offs.top,
+              x = client.x - offs.left,
+              y = client.y - offs.top,
               elWidth = offs.width;
             // Stylize @.ripple
             let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
@@ -162,13 +203,14 @@ export class MagicPie {
       });
 
       // SET POSITION TRANSFORM
-      this.d.addEventListener('mousedown', (event) => {
+      this.d.addEventListener(this.eventList.mousedown, (event) => {
         let target = event.target;
         let _self = this.getClosestTargetByAttrName(event.path, opts.data_container);
   
         if( target.classList.contains(opts.control_ipt_cls) === true ) {
+          let client = <any>this.getClientXY(event);
           let offs = _self.getBoundingClientRect(),
-              x = event.clientX - offs.left;
+              x = client.x - offs.left;
          // Stylize @.el_ef_bottom_border
          let el_ef_bottom_border = _self.querySelector(`.${opts.ef_bottom_border_cls}`);
          el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
@@ -183,7 +225,7 @@ export class MagicPie {
     }
     let myRipple = el_container.querySelector('.' + opts.paperRippleEl), timer;
     // CHECK EVENT TO SHOW OR HIDE
-    if ( eventType === 'mousedown' ) {
+    if ( eventType === this.eventList.mousedown ) {
       clearTimeout(timer);
       timer = 0;
       myRipple.style.opacity = 1;
@@ -221,10 +263,12 @@ export class MagicPie {
         // CHECK HAS PROP
         if (switchEle.hasOwnProperty(index)) {
           // MOUSEDOWN
-          switchEle[index].addEventListener('mousedown', (event) => {
-            event.preventDefault();            
+          switchEle[index].addEventListener(this.eventList.mousedown, (event) => {
+            event.preventDefault();
             let target = event.target;
-            let startX = event.pageX;
+            let client = <any>this.getClientXY(event);
+            let startX = client.x;
+            
             let el_container = target.parentNode;
 
             if (el_container.hasAttribute(opts.ariaChecked)) {
@@ -237,7 +281,8 @@ export class MagicPie {
               let switchStatusByDragging = (event1) => {
                 
                 if ( startX !== 'stopped' ) {
-                  let distance = Math.abs(event1.pageX - startX);
+                  let client = <any>this.getClientXY(event1);
+                  let distance = Math.abs(client.x - startX);
                   console.log(distance);
                   
                   if ( distance > 4 ) {
@@ -248,9 +293,9 @@ export class MagicPie {
                 }
               }
 
-              target.addEventListener('mousemove', switchStatusByDragging);
-              window.addEventListener('mouseup', () => {
-                target.removeEventListener('mousemove', switchStatusByDragging);
+              target.addEventListener(this.eventList.mousemove, switchStatusByDragging);
+              window.addEventListener(this.eventList.mouseup, () => {
+                target.removeEventListener(this.eventList.mousemove, switchStatusByDragging);
               });
 
             }
@@ -271,12 +316,12 @@ export class MagicPie {
             }
           });
           // MOUSEUP
-          switchEle[index].addEventListener('mouseup', (event) => {
+          switchEle[index].addEventListener(this.eventList.mouseup, (event) => {
             let target = event.target;          
             this.showPaperRipple(target.parentNode, event.type);
           });
           // MOUSELEAVE
-          switchEle[index].addEventListener('mouseleave', (event) => {
+          switchEle[index].addEventListener(this.eventList.mouseleave, (event) => {
             let target = event.target;          
             this.showPaperRipple(target.parentNode, event.type);
           });

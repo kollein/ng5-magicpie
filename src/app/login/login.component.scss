@@ -31,3 +31,13 @@
     position: relative;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .login-wrapper {
+    box-shadow: none;
+    width: 100%;
+  }
+  .gg-progress-bar-outer {
+    border-radius: 0;
+  }
+}
