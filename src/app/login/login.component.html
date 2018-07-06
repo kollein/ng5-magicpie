@@ -1,7 +1,7 @@
 <div class="login-container">
   <div class="login-wrapper ui-card">
 
-    <div class="gg-progress-bar" [ngClass]="{'active-gg-progress-bar': userInputState.onProgress}">
+    <div class="gg-progress-bar" [ngClass]="userInputState.onProgress ? 'active' : 'paused'">
       <div class="gg-progress-bar-outer">
         <div class="gg-progress-bar-inner"></div>
         <div class="gg-progress-bar-slide-piece effect-1"><span class="gg-progress-bar-bullet"></span></div>

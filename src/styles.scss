@@ -353,8 +353,8 @@ body {
   z-index: 1;
   position:relative;
   display:inline-block;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   line-height: 0;
   font-size: 0;
   .toggle-bar {
@@ -364,18 +364,18 @@ body {
     left: 0;
     right:0;
     bottom:0;
-    width: 28px;
-    height: 12px;
+    width: 32px;
+    height: 14px;
     background-color: rgba(0,0,0,.4);
     transition: background-color .4s;
     border-radius: 8px;
     .circle{
       display: block;
       position: absolute;
-      top: -3px;
-      left: -4px;
-      height: 16px;
-      width: 16px;
+      top: -2px;
+      left: -2px;
+      height: 18px;
+      width: 18px;
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.6);
       transition: transform linear .08s, background-color linear .08s;
@@ -458,16 +458,16 @@ body {
   z-index: 1;
   display: inline-block;
   position: relative;
-  height: 40px;
-  width: 40px;
+  height: 46px;
+  width: 46px;
   line-height: 0;
   font-size: 0;
   .checkbox {
       border: 2px solid $paper-grey-600;
       border-radius: 2px;
-      height: 16px;
-      margin: 12px;
-      width: 16px;
+      width: 18px;
+      height: 18px;
+      margin: 14px;
       background-color: transparent;
       &.disabled {
           opacity: .3;
@@ -693,7 +693,7 @@ body {
     height: 100%;
     background-color: #ff9800;
   }
-  &.active-gg-progress-bar {
+  &.active {
     opacity: 1;
     .gg-progress-bar-slide-piece.effect-1,
     .gg-progress-bar-slide-piece.effect-2,
@@ -701,7 +701,7 @@ body {
       animation-play-state: initial;
     }
   }
-  &.isPaused {
+  &.paused {
     .gg-progress-bar-slide-piece.effect-1,
     .gg-progress-bar-slide-piece.effect-2,
     .gg-progress-bar-bullet {

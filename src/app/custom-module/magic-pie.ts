@@ -232,7 +232,7 @@ export class MagicPie {
       // SET SCALE BY parentNode
       var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
           scale_n = 1;
-      if( myRipple_parent_height == 16 ) {
+      if( myRipple_parent_height ) {
         scale_n = 2.5; 
       }
       myRipple.style.transform = 'scale(' + scale_n + ')';
@@ -278,14 +278,21 @@ export class MagicPie {
             } else {
               // @.circle clicked
               let el_container = this.getClosestTargetByAttrName(event.path, opts.ariaChecked);
+              let status = el_container.getAttribute(opts.ariaChecked);
+              
               let switchStatusByDragging = (event1) => {
                 
                 if ( startX !== 'stopped' ) {
                   let client = <any>this.getClientXY(event1);
-                  let distance = Math.abs(client.x - startX);
+                  let distance = startX - client.x;
                   console.log(distance);
-                  
-                  if ( distance > 4 ) {
+                  let validDragging = false;
+                  if ( status === 'true' ) {
+                    validDragging = distance > 4 ? true : false;
+                  } else {
+                    validDragging = distance < -4 ? true : false;
+                  }
+                  if ( validDragging ) {
                     console.log('dragged');
                     startX = 'stopped';
                     switchStatus(el_container);

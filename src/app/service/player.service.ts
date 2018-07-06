@@ -26,7 +26,7 @@ export class PlayerService {
     return this.http.get<any>(this.playerUrl)
       .pipe(
         tap(players => this.log(`fetched getPlayer`)),
-        timeout(900),
+        timeout(300),
         catchError(this.handleError('getPlayer', []))
       );
   }
