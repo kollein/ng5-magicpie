@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { locateHostElement } from "@angular/core/src/render3/instructions";
 
 @Injectable()
 export class MagicPie {
