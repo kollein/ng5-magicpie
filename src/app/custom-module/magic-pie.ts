@@ -26,6 +26,12 @@ export class MagicPie {
     this.d = this.a.document;
     // switch Event List
     this.eventList = (typeof window.orientation !== 'undefined') ? this.eventMap.mobile : this.eventMap.desktop;
+    // FORM CONTROL : invoking
+    this.restartFormControl();
+    // RIPPLE WAVE: invoking
+    this.restartRippleWave();
+    // TOGGLE PAPER: invoking
+    this.restartSwitchStatus();
   }
 
   getClientXY(e) {
@@ -49,29 +55,26 @@ export class MagicPie {
     return client;
   }
 
-  getClosestTargetByAttrName(path, attrName) {
-    path = path.slice(0, -3);
-    let target, check = false;
-    for ( let x of path ) {
-      if ( x.hasAttribute(attrName) === true ) {
-        target = x;
-        break;
-      }
-    }
-    return target;
+  getClosestTargetByAttrName(el, attrName) {
+    while ( (el = el.parentElement) && !el.hasAttribute(attrName) );
+    return el;
   }
 
   restartRippleWave() {
     let opts = {
       data_container: "data-ripple",
       rippleCls: "ripple",
-      activeCls: "active-ripple",
+      activeCls: "active",
       mouseEvents: [this.eventList.mouseup, this.eventList.mouseleave],
       delayBeforeEndTour: 150,
       cheatKeys: {
         happyEnding: 'happy-ending'
       },
-      delayTrigger: 0
+      delayTrigger: 0,
+      mapkeydata: {
+        background_color: 'background-color',
+        position: 'position'
+      }
     }
     // create DOM for each data-ripple
     // DOCs: https://eager.io/blog/how-to-decide-when-your-code-should-run/
@@ -85,19 +88,18 @@ export class MagicPie {
 
       this.d.addEventListener(this.eventList.mousedown, (event) => {
         
-        let isRipple = false,
-            target = event.target;
-        if ( target.hasAttribute(opts.data_container) === true ) {
-          isRipple = true;
-        } else {
-          let realTarget = this.getClosestTargetByAttrName(event.path, opts.data_container);
-          if ( realTarget !== undefined ) {
-            target = realTarget;
-            isRipple = true;
-          }
-        }
+        let real_target = event.target;
+        let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
 
-        if( isRipple === true ) {
+        if ( container_target !== null ) {
+          let target = container_target;
+          let pallete = {
+            background_color: target.getAttribute(`data-${opts.mapkeydata.background_color}`),
+            position: target.getAttribute(`data-${opts.mapkeydata.position}`)
+          }
+
+          console.log(pallete);
+          
           // AVOID DUPLICATE CLICK ON @.ripple
           let old_el_ripple = target.querySelector(`.${opts.rippleCls}`);
           console.log("old_el_ripple:" + old_el_ripple);
@@ -113,12 +115,16 @@ export class MagicPie {
             let client = <any>this.getClientXY(event);
             
             let offs = _self.getBoundingClientRect(),
-              x = client.x - offs.left,
-              y = client.y - offs.top,
-              elWidth = offs.width;
+              x = client.x - offs.left + 'px',
+              y = client.y - offs.top + 'px',
+              elWidth = offs.width + 'px';
             // Stylize @.ripple
             let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
-            el_ripple.style.cssText = `width: ${elWidth}px;height:${elWidth}px;top:${y}px;left:${x}px;`;
+            if ( pallete.position === 'center' ) {
+              x = '50%';
+              y = '50%';
+            }
+            el_ripple.style.cssText = `width: ${elWidth};height:${elWidth};top:${y};left:${x};`;
 
             let setStransendState = (val = true) => {
               _self.setAttribute('istransend', val);            
@@ -137,7 +143,7 @@ export class MagicPie {
               } else {
                 console.log('renew transitionend event then auto-delete!');
                 el_ripple.removeEventListener("transitionend", setStransendState);
-                el_ripple.addEventListener("transitionend", removeEffect);
+                el_ripple.addEventListener("transitionend", removeEffect); // (2)
               }
             }
 
@@ -146,14 +152,14 @@ export class MagicPie {
                 _self.classList.remove(opts.activeCls);
               }, (state === opts.cheatKeys.happyEnding ? 0 : opts.delayBeforeEndTour) );
 
-              el_ripple.removeEventListener("transitionend", setStransendState);
-              el_ripple.removeEventListener("transitionend", removeEffect);
+              el_ripple.removeEventListener("transitionend", setStransendState); // (1)
+              el_ripple.removeEventListener("transitionend", removeEffect); // (2)
               opts.mouseEvents.forEach(evt => {
                 _self.removeEventListener(evt, endtour);
               });       
             }
             
-            el_ripple.addEventListener("transitionend", setStransendState);
+            el_ripple.addEventListener("transitionend", setStransendState); // (1)
             opts.mouseEvents.forEach(evt => {
               _self.addEventListener(evt, endtour);
             });
@@ -205,7 +211,7 @@ export class MagicPie {
       // SET POSITION TRANSFORM
       this.d.addEventListener(this.eventList.mousedown, (event) => {
         let target = event.target;
-        let _self = this.getClosestTargetByAttrName(event.path, opts.data_container);
+        let _self = this.getClosestTargetByAttrName(target, opts.data_container);
   
         if( target.classList.contains(opts.control_ipt_cls) === true ) {
           let client = <any>this.getClientXY(event);
@@ -219,38 +225,15 @@ export class MagicPie {
     });
   }
 
-  showPaperRipple(el_container, eventType) {
+  restartSwitchStatus() {
     let opts = {
-      paperRippleEl: 'paper-ripple'
-    }
-    let myRipple = el_container.querySelector('.' + opts.paperRippleEl), timer;
-    // CHECK EVENT TO SHOW OR HIDE
-    if ( eventType === this.eventList.mousedown ) {
-      clearTimeout(timer);
-      timer = 0;
-      myRipple.style.opacity = 1;
-      // SET SCALE BY parentNode
-      var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
-          scale_n = 1;
-      if( myRipple_parent_height ) {
-        scale_n = 2.5; 
-      }
-      myRipple.style.transform = 'scale(' + scale_n + ')';
-    } else {
-      timer = setTimeout(() => {
-        myRipple.style.opacity = 0;
-        myRipple.style.transform = 'scale(0)';
-      }, 100);
-    }
-  }
-
-  checkStatusOnElement(options) {
-    let opts = {
-      ariaChecked: 'aria-checked'
+      ariaChecked: 'aria-checked',
+      paperRippleEl: 'paper-ripple',
+      mouseEvents: [this.eventList.mouseup, this.eventList.mouseleave]  
     }
 
     setTimeout(() => {
-      let switchEle = this.d.querySelectorAll(options.strSelector);
+      
       let switchStatus = (el_container) => {
         if (el_container.getAttribute(opts.ariaChecked) === 'true') {
           el_container.setAttribute(opts.ariaChecked, 'false');
@@ -259,81 +242,113 @@ export class MagicPie {
         }
       }
 
-      for (let index in switchEle) {
-        // CHECK HAS PROP
-        if (switchEle.hasOwnProperty(index)) {
-          // MOUSEDOWN
-          switchEle[index].addEventListener(this.eventList.mousedown, (event) => {
-            event.preventDefault();
-            let target = event.target;
-            let client = <any>this.getClientXY(event);
-            let startX = client.x;
+      this.d.addEventListener(this.eventList.mousedown, (event) => {
+
+        let real_target = event.target;
+        let container_target = this.getClosestTargetByAttrName(real_target, opts.ariaChecked);
+          
+        if ( container_target !== null ) {
+          let target = container_target;
+
+          let client = <any>this.getClientXY(event);
+          let startX = client.x;
+      
+          if (real_target.parentNode.hasAttribute(opts.ariaChecked)) {
+            // @.toggle-bar clicked
+            switchStatus(target);
+            console.log('toggle clicked');
             
-            let el_container = target.parentNode;
-
-            if (el_container.hasAttribute(opts.ariaChecked)) {
-              // @.toggle-bar clicked
-              switchStatus(el_container);
-
-            } else {
-              // @.circle clicked
-              let el_container = this.getClosestTargetByAttrName(event.path, opts.ariaChecked);
-              let status = el_container.getAttribute(opts.ariaChecked);
+          } else {
+            console.log('circle clicked');
+            // @.circle clicked
+            let status = target.getAttribute(opts.ariaChecked);
+            
+            let switchStatusByDragging = (event1) => {
               
-              let switchStatusByDragging = (event1) => {
-                
-                if ( startX !== 'stopped' ) {
-                  let client = <any>this.getClientXY(event1);
-                  let distance = startX - client.x;
-                  console.log(distance);
-                  let validDragging = false;
-                  if ( status === 'true' ) {
-                    validDragging = distance > 4 ? true : false;
-                  } else {
-                    validDragging = distance < -4 ? true : false;
-                  }
-                  if ( validDragging ) {
-                    console.log('dragged');
-                    startX = 'stopped';
-                    switchStatus(el_container);
-                  }
+              if ( startX !== 'stopped' ) {
+                let client = <any>this.getClientXY(event1);
+                let distance = startX - client.x;
+                console.log('distance: ', distance);
+                let validDragging = false;
+                if ( status === 'true' ) {
+                  validDragging = distance > 4 ? true : false;
+                } else {
+                  validDragging = distance < -4 ? true : false;
+                }
+                if ( validDragging ) {
+                  console.log('dragged');
+                  startX = 'stopped';
+                  switchStatus(target);
                 }
               }
-
-              target.addEventListener(this.eventList.mousemove, switchStatusByDragging);
-              window.addEventListener(this.eventList.mouseup, () => {
-                target.removeEventListener(this.eventList.mousemove, switchStatusByDragging);
-              });
-
-            }
-            // GATHER BY MAP DATA
-            let streamDATA = {
-              "data-value": false
-            };
-            for (let k in options.mapDATA) {
-              streamDATA[options.mapDATA[k]] = el_container.getAttribute(options.mapDATA[k]);
+              // 
             }
 
-            // SHOW EFFECT RIPPLE
-            this.showPaperRipple(el_container, event.type);
-            // INVOKE CALLBACK
-            if (options.callback) {
-              // TRANSFER : el_container, status TO CALLBACK
-              options.callback(el_container, streamDATA);
+            let removeDragging = () => {
+              console.log('remove dragging');
+              real_target.removeEventListener(this.eventList.mousemove, switchStatusByDragging);
+              opts.mouseEvents.forEach(evt => {
+                real_target.removeEventListener(evt, removeDragging);
+              }); 
             }
+            
+            real_target.addEventListener(this.eventList.mousemove, switchStatusByDragging);
+            opts.mouseEvents.forEach(evt => {
+              real_target.addEventListener(evt, removeDragging);
+            }); 
+          }
+
+          let myRipple = target.querySelector('.' + opts.paperRippleEl);
+          myRipple.style.opacity = 1;
+          // SET SCALE BY parentNode
+          var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
+              scale_n = 1;
+          if( myRipple_parent_height ) {
+            scale_n = 2.5; 
+          }
+          myRipple.style.transform = 'scale(' + scale_n + ')';
+      
+          let setStransendState = (val = true) => {
+            myRipple.setAttribute('istransend', val);
+          }
+          let getStransendState = () => {
+            return myRipple.getAttribute('istransend');            
+          }
+          
+          setStransendState(false);
+      
+          let removeEffect = () => {
+            myRipple.style.opacity = 0;
+            myRipple.style.transform = 'scale(0)';
+      
+            // remove all events
+            myRipple.removeEventListener("transitionend", setStransendState); // (1)
+            myRipple.removeEventListener("transitionend", removeEffect); // (2)
+            opts.mouseEvents.forEach(evt => {
+              target.removeEventListener(evt, endtour);
+            }); 
+            
+          }
+      
+          let endtour = () => {
+            if ( getStransendState() !== 'false' ) {
+              console.log('happy ending!');
+              removeEffect();
+              setStransendState(false);
+            } else {
+              console.log('renew transitionend event then auto-delete!');
+              myRipple.removeEventListener("transitionend", setStransendState); // (1)
+              myRipple.addEventListener("transitionend", removeEffect); // (2)
+            }
+          }
+      
+          myRipple.addEventListener("transitionend", setStransendState); // (1)
+          opts.mouseEvents.forEach(evt => {
+            target.addEventListener(evt, endtour);
           });
-          // MOUSEUP
-          switchEle[index].addEventListener(this.eventList.mouseup, (event) => {
-            let target = event.target;          
-            this.showPaperRipple(target.parentNode, event.type);
-          });
-          // MOUSELEAVE
-          switchEle[index].addEventListener(this.eventList.mouseleave, (event) => {
-            let target = event.target;          
-            this.showPaperRipple(target.parentNode, event.type);
-          });
+
         }
-      }
-    });
+      });
+    }, 0);
   }
 }

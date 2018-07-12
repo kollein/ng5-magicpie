@@ -12,6 +12,8 @@ import { MessageService }       from './service/message.service';
 import { HomeComponent } from './home/home.component';
 import { ObserComponent } from './obser/obser.component';
 
+import { MagicPie } from './custom-module/magic-pie';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +27,7 @@ import { ObserComponent } from './obser/obser.component';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [ PlayerService, MessageService ],
+  providers: [ PlayerService, MessageService, MagicPie ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

@@ -15,7 +15,7 @@
 }
 .error-msg-line {
   color: $danger;
-  margin: 5px 0;
+  margin: 7px 0;
   height: 16px;
   line-height: 16px;
   font-size: 12px;
@@ -33,9 +33,13 @@
 }
 
 @media screen and (max-width: 480px) {
+  .login-container {
+    align-items: initial;
+  }
   .login-wrapper {
     box-shadow: none;
     width: 100%;
+    padding: 24px 24px 36px;
   }
   .gg-progress-bar-outer {
     border-radius: 0;
