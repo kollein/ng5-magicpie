@@ -48,7 +48,7 @@ export class LoginComponent {
 
   ngAfterViewInit() {
     // STO to do after View rendered and MagicPie invoked all events
-    setTimeout(() => this.username_input_el.nativeElement.focus(), 0);
+    // setTimeout(() => this.username_input_el.nativeElement.focus(), 0);
   }
 
   login(): void {
