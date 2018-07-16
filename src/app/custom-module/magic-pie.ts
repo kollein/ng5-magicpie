@@ -175,58 +175,50 @@ export class MagicPie {
 
     setTimeout(() => {
 
-      this.d.addEventListener(this.eventList.mousedown, (event) => {
+      let boundControls = this.d.querySelectorAll(`[${opts.data_container}]`);
 
-        let real_target = event.target;
-        let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
+      boundControls.forEach(_self => {
 
-        if ( container_target !== null ) {
+        let inputElement = _self.querySelector(`.${opts.control_ipt_cls}`);
 
-          let inputElement = container_target.querySelector(`.${opts.control_ipt_cls}`);
-          
-          let checkingValue = () => {
-            container_target.classList.add(opts.activeCls);
-            if (inputElement.value) {
-              container_target.classList.remove('hasValue');
-            } 
-          }
+        inputElement.addEventListener('focusin', (event) => {
+          _self.classList.add(opts.activeCls);
+          if (inputElement.value) {
+            _self.classList.remove('hasValue');
+          } 
+        });
 
-          inputElement.addEventListener('focusin', checkingValue);
-
-          // FOCUSOUT, BLUR
-          let endtour = () => {
-            container_target.classList.remove(opts.activeCls);          
-            if (inputElement.value) {
-              container_target.classList.add('hasValue');
-            } else {
-              container_target.classList.remove('hasValue');
-            }
-
-            inputElement.removeEventListener('focusin', checkingValue);
-
-            opts.groupEvents.forEach(evt => {
-              inputElement.removeEventListener(evt, endtour);
-            });
-          }
-
-          opts.groupEvents.forEach(evt => {
-            inputElement.addEventListener(evt, endtour);
-          });
-
-
-
-          // SET POSITION TRANSFORM
-          if( real_target.classList.contains(opts.control_ipt_cls) === true ) {
-            let client = <any>this.getClientXY(event);
-            let offs = container_target.getBoundingClientRect(),
-                x = client.x - offs.left;
-            // Stylize @.el_ef_bottom_border
-            let el_ef_bottom_border = container_target.querySelector(`.${opts.ef_bottom_border_cls}`);
-            el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
+        // FOCUSOUT, BLUR
+        let endtour = () => {
+          _self.classList.remove(opts.activeCls);          
+          if (inputElement.value) {
+            _self.classList.add('hasValue');
+          } else {
+            _self.classList.remove('hasValue');
           }
         }
-      }, true);
-    }, 0);
+
+        opts.groupEvents.forEach(evt => {
+          inputElement.addEventListener(evt, endtour);
+        });
+
+      });
+
+      // SET POSITION TRANSFORM
+      this.d.addEventListener(this.eventList.mousedown, (event) => {
+        let real_target = event.target;
+        let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
+  
+        if( real_target.classList.contains(opts.control_ipt_cls) === true ) {
+          let client = <any>this.getClientXY(event);
+          let offs = container_target.getBoundingClientRect(),
+              x = client.x - offs.left;
+         // Stylize @.el_ef_bottom_border
+         let el_ef_bottom_border = container_target.querySelector(`.${opts.ef_bottom_border_cls}`);
+         el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
+        }
+      });
+    });
   }
 
   restartSwitchStatus() {
@@ -274,9 +266,9 @@ export class MagicPie {
                 // console.log('distance: ', distance);
                 let validDragging = false;
                 if ( status === 'true' ) {
-                  validDragging = distance > 4 ? true : false;
+                  validDragging = distance > 3 ? true : false;
                 } else {
-                  validDragging = distance < -4 ? true : false;
+                  validDragging = distance < -3 ? true : false;
                 }
                 // console.log('validDragging: ', validDragging);
                 

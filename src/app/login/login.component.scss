@@ -12,6 +12,14 @@
   width: 450px;
   padding: 16px;
   border-radius: 8px;
+  form {
+    position: relative;
+  }
+  .toggle-safemode {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 }
 .error-msg-line {
   color: $danger;

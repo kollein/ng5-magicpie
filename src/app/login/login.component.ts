@@ -3,6 +3,7 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angula
 import { PlayerService } from '../service/player.service';
 import { MessageService } from '../service/message.service';
 import { Subscriber } from 'rxjs/Subscriber';
+import { MagicPie } from '../custom-module/magic-pie';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +37,7 @@ export class LoginComponent {
   public message = '';
 
   constructor(
+    magicpie: MagicPie,
     private playerService: PlayerService,
     private messageService: MessageService
   ) {
@@ -48,7 +50,7 @@ export class LoginComponent {
 
   ngAfterViewInit() {
     // STO to do after View rendered and MagicPie invoked all events
-    // setTimeout(() => this.username_input_el.nativeElement.focus(), 0);
+    setTimeout(() => this.username_input_el.nativeElement.focus(), 100);
   }
 
   login(): void {

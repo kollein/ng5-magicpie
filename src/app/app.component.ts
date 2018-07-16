@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 
-import { MagicPie } from './custom-module/magic-pie';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,6 +7,6 @@ import { MagicPie } from './custom-module/magic-pie';
 })
 export class AppComponent {
   title = 'app';
-  constructor (magicpie: MagicPie) {
+  constructor () {
   }
 }
