@@ -295,7 +295,10 @@ export class MagicPie {
           myRipple.style.opacity = 1;
           // SET SCALE BY parentNode
           var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
-              scale_n = 2.5;
+              scale_n = 1;
+          if( myRipple_parent_height ) {
+            scale_n = 2.5; 
+          }
           myRipple.style.transform = 'scale(' + scale_n + ')';
       
           let setStransendState = (val = true) => {
