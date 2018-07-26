@@ -13,21 +13,27 @@ import { HomeComponent } from './home/home.component';
 import { ObserComponent } from './obser/obser.component';
 
 import { MagicPie } from './custom-module/magic-pie';
+import { CustomeventComponent } from './customevent/customevent.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    ObserComponent
+    ObserComponent,
+    CustomeventComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [ PlayerService, MessageService, MagicPie ],
+  providers: [ 
+    PlayerService,
+    MessageService,
+    MagicPie,
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

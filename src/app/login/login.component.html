@@ -50,16 +50,23 @@
       </div>
 
       <div class="error-msg-line">{{message}}</div>
-      <div class="row">
+      <div class="row btn-action">
+        <div class="btn btn-default btn-link login-btn" data-ripple routerLink="/dashboard">
+          <div class="ripple"></div>          
+          <div class="btn-text-mask"></div>
+          <span class="text">Button link</span>
+        </div>
+
         <div class="btn btn-default btn-blue login-btn" data-ripple (click)="login()">
           <div class="ripple"></div>
           <div class="btn-text-mask"></div>
           <span class="text">Login</span>
         </div>
+
         <div class="btn btn-default btn-blue login-btn" data-ripple data-background-color="rgba(0, 0, 0, .35)" data-position="center">
           <div class="ripple"></div>          
           <div class="btn-text-mask"></div>
-          <span class="text">Touch</span>
+          <span class="text">Center</span>
         </div>
       </div>
     </form>

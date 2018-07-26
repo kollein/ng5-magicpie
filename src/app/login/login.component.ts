@@ -27,8 +27,8 @@ export class LoginComponent {
   };
   msg = {
     "error": {
-      "username": "Username is wrong.",
-      "password": "Password is wrong."
+      "username": "Username is incorrect.",
+      "password": "Password is incorrect."
     },
     "success": {
       "login": "Login successfully."
@@ -37,7 +37,7 @@ export class LoginComponent {
   public message = '';
 
   constructor(
-    magicpie: MagicPie,
+    public magicpie: MagicPie,
     private playerService: PlayerService,
     private messageService: MessageService
   ) {
@@ -50,10 +50,13 @@ export class LoginComponent {
 
   ngAfterViewInit() {
     // STO to do after View rendered and MagicPie invoked all events
-    setTimeout(() => this.username_input_el.nativeElement.focus(), 100);
+    setTimeout(() => {
+      this.username_input_el.nativeElement.focus();
+    });
   }
 
-  login(): void {
+  login() {
+    
     console.log(this.messageService.getMessage());
     
     let msgError = '';
@@ -66,12 +69,17 @@ export class LoginComponent {
           msgError = '';
           this.userInputState.password = true;
           this.userInputState.onProgress = true;
+          this.username_input_el.nativeElement.setAttribute('disabled', true);
+          this.password_input_el.nativeElement.setAttribute('disabled', true);
+          break;
+
         } else {
-          this.password_input_el.nativeElement.focus();          
+          this.password_input_el.nativeElement.focus();
           msgError = this.msg.error.password;
           this.userInputState.password = false;
           this.userInputState.onProgress = false;          
         }
+
       } else {
         this.username_input_el.nativeElement.focus();
         msgError = this.msg.error.username;

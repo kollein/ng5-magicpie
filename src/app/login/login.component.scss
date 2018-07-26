@@ -20,6 +20,10 @@
     right: 0;
     top: 0;
   }
+  .btn-action {
+    justify-content: space-between;
+    margin-top: 20px;
+  }
 }
 .error-msg-line {
   color: $danger;
@@ -29,7 +33,6 @@
   font-size: 12px;
 }
 .login-btn {
-  margin-left: auto;
   font-weight: 700;
   padding: 0 12px;
   min-width: 88px;

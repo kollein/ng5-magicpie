@@ -393,8 +393,18 @@ body {
   position: relative;
   text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  z-index: 0;
+  .btn-text-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+  }
 }
 
 .btn-default {
@@ -411,17 +421,59 @@ body {
     box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
   }
 }
-
-.btn-text-mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: transparent;
+.btn-link {
+  background: #fff;
+  color: #4285f4;
+  box-shadow: none;
+  &.active {
+    transition: background .8s;
+  }
+  .ripple {
+    background-image: radial-gradient(circle farthest-side,rgba(66,133,244,0.251),rgba(66,133,244,0.251) 80%,rgba(66,133,244,0) 100%);
+  }
+  .text {
+    font-weight: 400;
+    white-space: nowrap;
+    text-transform: none;
+  }
 }
 
 /*** EFFECTS ***/
+
+/* RIPPLE WAVE EFFECT */
+
+[data-ripple] {
+  position: relative;
+}
+
+.ripple {
+  background-image: radial-gradient(circle farthest-side, #2a56c6, #2a56c6 80%, rgba(42, 86, 198, 0) 100%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: opacity .2s ease, visibility 0s ease .2s, transform 0s ease .2s;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  .active & {
+    transform: translate(-50%, -50%) scale(2.2);
+    visibility: visible;
+    opacity: 1;
+    transition: transform .3s cubic-bezier(0, 0, .2, 1), opacity .2s cubic-bezier(0, 0, .2, 1);
+  }
+  .btn[data-position="center"] & {
+    transition: transform .3s cubic-bezier(0.23, 1, 0.32, 1), opacity .2s cubic-bezier(0.23, 1, 0.32, 1);
+    background: rgba(255, 255, 255, .35);
+    border-radius: 50%;
+  }
+  .active[data-position="center"] & {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
 
 /* TOOLTIP */
 
@@ -476,41 +528,6 @@ body {
   }
 }
 
-/* RIPPLE EFFECT */
-
-[data-ripple] {
-  position: relative;
-}
-
-.ripple {
-  background-image: radial-gradient(circle farthest-side, #2a56c6, #2a56c6 80%, rgba(42, 86, 198, 0) 100%);
-  transform: translate(-50%, -50%) scale(0);
-  transition: opacity .2s ease, visibility 0s ease .2s, transform 0s ease .2s;
-  background-size: cover;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  .active & {
-    transform: translate(-50%, -50%) scale(2.2);
-    visibility: visible;
-    opacity: 1;
-    transition: transform .3s cubic-bezier(0, 0, .2, 1), opacity .2s cubic-bezier(0, 0, .2, 1);
-  }
-  .btn[data-position="center"] & {
-    transition: transform .3s cubic-bezier(0.23, 1, 0.32, 1), opacity .2s cubic-bezier(0.23, 1, 0.32, 1);
-    background: rgba(255, 255, 255, .35);
-    border-radius: 50%;
-  }
-  .active[data-position="center"] & {
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
 /* PAPER-RIPPLE: THIS GENERAL-CLASS FOR SHOW EFFECT ON CHECK STATEMENT */
 
 .paper-ripple {
@@ -524,7 +541,7 @@ body {
   background-color: rgba(0, 0, 0, 0.1);
   opacity: 0;
   transform: scale(0);
-  transition: opacity .3s cubic-bezier(0.23, 1, 0.32, 1), transform .3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform .3s cubic-bezier(0.23, 1, 0.32, 1), opacity .2s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 /* TOGGLE BUTTON */
@@ -557,7 +574,7 @@ body {
       width: 18px;
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.6);
-      transition: transform linear .08s, background-color linear .08s;
+      transition: transform linear 140ms, background-color linear 140ms;
       background-color: #fff;
     }
   }
