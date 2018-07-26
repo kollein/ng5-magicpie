@@ -15,11 +15,6 @@
   form {
     position: relative;
   }
-  .toggle-safemode {
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
   .btn-action {
     justify-content: space-between;
     margin-top: 20px;
@@ -41,6 +36,15 @@
   .text {
     position: relative;
   }
+}
+.safe-mode {
+  display: flex;
+  justify-content: flex-end;
+}
+.privacy-right {
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 @media screen and (max-width: 480px) {

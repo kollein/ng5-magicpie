@@ -9,20 +9,16 @@
       </div>
     </div>
     <form id="login">
-      <div class="toggle-container toggle-safemode" aria-checked="true">
-        <div class="toggle-bar">
-          <div class="circle">
-            <div class="paper-ripple"></div>
+      <div class="safe-mode">
+        <div class="toggle-container" aria-checked="true">
+          <div class="toggle-bar">
+            <div class="circle">
+              <div class="paper-ripple"></div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="checkbox-container" aria-checked="true">
-        <div class="checkbox">
-          <div class="circle">
-            <div class="paper-ripple"></div>
-          </div>
-        </div>
-      </div>
+
       <div class="gg-bound-control" [ngClass]="{'hasError': !userInputState.username}" data-bound-control>
         <div class="gg-bound-control-outer">
           <div class="gg-bound-control-inner">
@@ -50,6 +46,18 @@
       </div>
 
       <div class="error-msg-line">{{message}}</div>
+
+      <div class="privacy-right">
+        <div class="checkbox-container" aria-checked="true">
+          <div class="checkbox">
+            <div class="circle">
+              <div class="paper-ripple"></div>
+            </div>
+          </div>
+        </div>
+        <div class="text">I agree with terms and privacy.</div>
+      </div>
+
       <div class="row btn-action">
         <div class="btn btn-default btn-link login-btn" data-ripple routerLink="/dashboard">
           <div class="ripple"></div>          

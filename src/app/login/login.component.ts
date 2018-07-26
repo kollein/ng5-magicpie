@@ -52,7 +52,7 @@ export class LoginComponent {
     // STO to do after View rendered and MagicPie invoked all events
     setTimeout(() => {
       this.username_input_el.nativeElement.focus();
-    });
+    }, 100);
   }
 
   login() {
@@ -69,6 +69,7 @@ export class LoginComponent {
           msgError = '';
           this.userInputState.password = true;
           this.userInputState.onProgress = true;
+          this.username_input_el.nativeElement.blur();
           this.username_input_el.nativeElement.setAttribute('disabled', true);
           this.password_input_el.nativeElement.setAttribute('disabled', true);
           break;
