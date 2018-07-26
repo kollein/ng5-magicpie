@@ -243,7 +243,7 @@ export class MagicPie {
           
         if ( container_target !== null ) {
           let target = container_target;
-
+          let myRipple = target.querySelector('.' + opts.paperRippleEl);
           let client = <any>this.getClientXY(event);
           let startX = client.x;
       
@@ -253,10 +253,17 @@ export class MagicPie {
             console.log('toggle clicked');
             
           } else {
-            console.log('circle clicked');
+            
+            console.log('circle mousedown');
             // @.circle clicked
             let status = target.getAttribute(opts.ariaChecked);
-            
+            // Detect clicking case not for dragging case
+            setTimeout(()=>{
+              let istransendForClickingCase = myRipple.getAttribute('istransend');
+              console.log('detect clicked: ', istransendForClickingCase);
+              istransendForClickingCase === 'false' && switchStatus(target);
+            }, 200);
+
             let switchStatusByDragging = (event1) => {
               
               if ( startX !== 'stopped' ) {
@@ -291,7 +298,6 @@ export class MagicPie {
             this.d.addEventListener(this.eventList.mouseup, removeDragging); // (2)
           }
 
-          let myRipple = target.querySelector('.' + opts.paperRippleEl);
           myRipple.style.opacity = 1;
           // SET SCALE BY parentNode
           var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,

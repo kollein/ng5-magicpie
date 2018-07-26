@@ -1,4 +1,5 @@
 @import 'variable';
+@import 'chrome-color';
 
 .login-container {
   position: absolute;
@@ -40,11 +41,18 @@
 .safe-mode {
   display: flex;
   justify-content: flex-end;
+  .toggle-container {
+    direction: rtl;
+  }
 }
 .privacy-right {
   position: relative;
   display: flex;
   align-items: center;
+  color: $paper-grey-600;
+  .checkbox-container {
+    margin-left: -14px;
+  }
 }
 
 @media screen and (max-width: 480px) {
