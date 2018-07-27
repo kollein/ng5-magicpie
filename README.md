@@ -1,6 +1,8 @@
 # ng5-magicpie
 Angular 4+ Module to integrate into your app.
 
+Demo: http://material.huynhminhthanh.com
+
 ## On Developing
 
 - Form control
