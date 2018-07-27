@@ -7,7 +7,7 @@ import { ObserComponent } from './obser/obser.component';
 import { CustomeventComponent } from './customevent/customevent.component';
  
 const routes: Routes = [
-  { path: '', component: LoginComponent },
+  { path: '', component: CustomeventComponent },
   { path: 'dashboard', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'obser', component: ObserComponent }
