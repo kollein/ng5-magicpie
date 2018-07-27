@@ -19,6 +19,9 @@ export class MagicPie {
     }
   }
   eventList;
+  options = {
+    "delayDetectClick": 200
+  }
 
   constructor() {
     this.a = window;
@@ -111,6 +114,7 @@ export class MagicPie {
               x = client.x - offs.left + 'px',
               y = client.y - offs.top + 'px',
               elWidth = offs.width + 'px';
+
             // Stylize @.ripple
             let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
             if ( pallete.position === 'center' ) {
@@ -243,7 +247,6 @@ export class MagicPie {
           
         if ( container_target !== null ) {
           let target = container_target;
-          let myRipple = target.querySelector('.' + opts.paperRippleEl);
           let client = <any>this.getClientXY(event);
           let startX = client.x;
       
@@ -259,10 +262,10 @@ export class MagicPie {
             let status = target.getAttribute(opts.ariaChecked);
             // Detect clicking case not for dragging case
             setTimeout(()=>{
-              let istransendForClickingCase = myRipple.getAttribute('istransend');
+              let istransendForClickingCase = container_target.getAttribute('istransend');
               console.log('detect clicked: ', istransendForClickingCase);
               istransendForClickingCase === 'false' && switchStatus(target);
-            }, 200);
+            }, this.options.delayDetectClick);
 
             let switchStatusByDragging = (event1) => {
               
@@ -298,6 +301,7 @@ export class MagicPie {
             this.d.addEventListener(this.eventList.mouseup, removeDragging); // (2)
           }
 
+          let myRipple = target.querySelector('.' + opts.paperRippleEl);
           myRipple.style.opacity = 1;
           // SET SCALE BY parentNode
           var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
@@ -308,10 +312,10 @@ export class MagicPie {
           myRipple.style.transform = 'scale(' + scale_n + ')';
       
           let setStransendState = (val = true) => {
-            myRipple.setAttribute('istransend', val);
+            container_target.setAttribute('istransend', val);
           }
           let getStransendState = () => {
-            return myRipple.getAttribute('istransend');            
+            return container_target.getAttribute('istransend');            
           }
           
           setStransendState(false);
