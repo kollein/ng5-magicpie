@@ -555,6 +555,7 @@ body {
   height: 46px;
   line-height: 0;
   font-size: 0;
+  user-select: none;
   .toggle-bar {
     position: absolute;
     cursor: pointer;
@@ -660,6 +661,7 @@ body {
   width: 46px;
   line-height: 0;
   font-size: 0;
+  user-select: none;
   .checkbox {
     border: 2px solid $paper-grey-600;
     border-radius: 2px;
