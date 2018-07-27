@@ -544,6 +544,9 @@ body {
   opacity: 0;
   transform: scale(0);
   transition: transform .3s cubic-bezier(0.23, 1, 0.32, 1), opacity .2s cubic-bezier(0.23, 1, 0.32, 1);
+  [aria-checked="true"] & {
+    background-color: rgba(66, 133, 244, .12);
+  }
 }
 
 /* TOGGLE BUTTON */
