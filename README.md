@@ -1,2 +1,23 @@
 # ng5-magicpie
-ng5 with magic pie
+Angular 4+ Module to integrate into your app.
+
+## On Developing
+
+- Form control
+- Toggle Bar
+- Checkbox
+- Loading Bar
+- Ripple Wave
+
+## Future Developing
+
+- Dropdown List
+- Sortable Table
+- Autocomplete
+- Popup - Modal
+- Tooltip
+- ...
+
+## Now can try it easily:
+
+- Thank for visit!
