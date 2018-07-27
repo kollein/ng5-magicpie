@@ -255,12 +255,14 @@ export class MagicPie {
             console.log('circle mousedown');
             // @.circle clicked
             let status = target.getAttribute(opts.ariaChecked);
-            // Detect clicking case not for dragging case
-            setTimeout(()=>{
-              let istransendForClickingCase = container_target.getAttribute('istransend');
-              console.log('detect clicked: ', istransendForClickingCase);
-              istransendForClickingCase === 'false' && switchStatus(target);
-            }, this.options.delayDetectClick);
+            // Detect clicking case or dragging case support: only on desktop
+            if ( this.eventList.mousedown === this.eventMap.desktop.mousedown ) {
+              setTimeout(()=>{
+                let istransendForClickingCase = container_target.getAttribute('istransend');
+                console.log('detect clicked: ', istransendForClickingCase);
+                istransendForClickingCase === 'false' && switchStatus(target);
+              }, this.options.delayDetectClick);
+            }
 
             let switchStatusByDragging = (event1) => {
               
