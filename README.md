@@ -1,7 +1,7 @@
 # ng5-magicpie
 Angular 4+ Module to integrate into your app.
 
-Demo: http://material.huynhminhthanh.com/
+Demo: http://material.huynhminhthanh.com
 
 ## On Developing
 
@@ -10,6 +10,7 @@ Demo: http://material.huynhminhthanh.com/
 - Checkbox
 - Loading Bar
 - Ripple Wave
+- Loading Circle
 
 ## Future Developing
 

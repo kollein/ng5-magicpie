@@ -21,6 +21,15 @@
     margin-top: 20px;
   }
 }
+.material-logo {
+  position: absolute;
+  top: -22px;
+  left: 0;
+  width: 250px;
+  height: 120px;
+  background: url(/assets/img/logo.svg) no-repeat -70px 0px;
+  background-size: contain;
+}
 .error-msg-line {
   color: $danger;
   margin: 7px 0;
@@ -63,6 +72,9 @@
     box-shadow: none;
     width: 100%;
     padding: 24px 24px 36px;
+  }
+  .material-logo {
+    top: 10px;
   }
   .gg-progress-bar-outer {
     border-radius: 0;

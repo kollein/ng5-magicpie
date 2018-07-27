@@ -72,99 +72,95 @@ export class MagicPie {
       cheatKeys: {
         happyEnding: 'happy-ending'
       },
-      delayTrigger: 0,
+      delayTrigger: 80,
       mapkeydata: {
         background_color: 'background-color',
         position: 'position'
       }
     }
-    // create DOM for each data-ripple
-    // DOCs: https://eager.io/blog/how-to-decide-when-your-code-should-run/
-    setTimeout(() => {
 
-      this.d.addEventListener(this.eventList.mousedown, (event) => {
+    this.d.addEventListener(this.eventList.mousedown, (event) => {
         
-        let real_target = event.target;
-        let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
+      let real_target = event.target;
+      let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
 
-        if ( container_target !== null ) {
-          let target = container_target;
-          let pallete = {
-            background_color: target.getAttribute(`data-${opts.mapkeydata.background_color}`),
-            position: target.getAttribute(`data-${opts.mapkeydata.position}`)
+      if ( container_target !== null ) {
+        let target = container_target;
+        let pallete = {
+          background_color: target.getAttribute(`data-${opts.mapkeydata.background_color}`),
+          position: target.getAttribute(`data-${opts.mapkeydata.position}`)
+        }
+
+        console.log(pallete);
+        
+        // AVOID DUPLICATE CLICK ON @.ripple
+        let old_el_ripple = target.querySelector(`.${opts.rippleCls}`);
+        console.log("old_el_ripple:" + old_el_ripple);
+
+        if ( old_el_ripple !== null ) {
+          // ASSIGN LEXICAL @this
+          let _self = target;
+          _self.classList.add(opts.activeCls);
+          /*
+            FIND POSITION OF @this
+            Note: clientX, clientY: get position with screen-captured as what you see on
+          */
+          let client = <any>this.getClientXY(event);
+          
+          let offs = _self.getBoundingClientRect(),
+            x = client.x - offs.left + 'px',
+            y = client.y - offs.top + 'px',
+            elWidth = offs.width + 'px';
+
+          // Stylize @.ripple
+          let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
+          if ( pallete.position === 'center' ) {
+            x = '50%';
+            y = '50%';
+          }
+          let customBackground = pallete.background_color !== '' ? `background: ${pallete.background_color}` : '';
+          el_ripple.style.cssText = `width: ${elWidth};height:${elWidth};top:${y};left:${x};${customBackground}`;
+
+          let setStransendState = (val = true) => {
+            _self.setAttribute('istransend', val);            
+          }
+          let getStransendState = () => {
+            return _self.getAttribute('istransend');
           }
 
-          console.log(pallete);
+          setStransendState(false);
           
-          // AVOID DUPLICATE CLICK ON @.ripple
-          let old_el_ripple = target.querySelector(`.${opts.rippleCls}`);
-          console.log("old_el_ripple:" + old_el_ripple);
-
-          if ( old_el_ripple !== null ) {
-            // ASSIGN LEXICAL @this
-            let _self = target;
-            _self.classList.add(opts.activeCls);
-            /*
-              FIND POSITION OF @this
-              Note: clientX, clientY: get position with screen-captured as what you see on
-            */
-            let client = <any>this.getClientXY(event);
-            
-            let offs = _self.getBoundingClientRect(),
-              x = client.x - offs.left + 'px',
-              y = client.y - offs.top + 'px',
-              elWidth = offs.width + 'px';
-
-            // Stylize @.ripple
-            let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
-            if ( pallete.position === 'center' ) {
-              x = '50%';
-              y = '50%';
+          let endtour = () => {
+            if ( getStransendState() !== 'false' ) {
+              console.log('happy ending!');
+              removeEffect(opts.cheatKeys.happyEnding);
+              setStransendState(false);
+            } else {
+              console.log('renew transitionend event then auto-delete!');
+              el_ripple.removeEventListener("transitionend", setStransendState);
+              el_ripple.addEventListener("transitionend", removeEffect); // (2)
             }
-            let customBackground = pallete.background_color !== '' ? `background: ${pallete.background_color}` : '';
-            el_ripple.style.cssText = `width: ${elWidth};height:${elWidth};top:${y};left:${x};${customBackground}`;
+          }
 
-            let setStransendState = (val = true) => {
-              _self.setAttribute('istransend', val);            
-            }
-            let getStransendState = () => {
-              return _self.getAttribute('istransend');
-            }
+          let removeEffect = (state) => {
+            setTimeout(() => {
+              _self.classList.remove(opts.activeCls);
+            }, (state === opts.cheatKeys.happyEnding ? 0 : opts.delayBeforeEndTour) );
 
-            setStransendState(false);
-            
-            let endtour = () => {
-              if ( getStransendState() !== 'false' ) {
-                console.log('happy ending!');
-                removeEffect(opts.cheatKeys.happyEnding);
-                setStransendState(false);
-              } else {
-                console.log('renew transitionend event then auto-delete!');
-                el_ripple.removeEventListener("transitionend", setStransendState);
-                el_ripple.addEventListener("transitionend", removeEffect); // (2)
-              }
-            }
-
-            let removeEffect = (state) => {
-              setTimeout(() => {
-                _self.classList.remove(opts.activeCls);
-              }, (state === opts.cheatKeys.happyEnding ? 0 : opts.delayBeforeEndTour) );
-
-              el_ripple.removeEventListener("transitionend", setStransendState); // (1)
-              el_ripple.removeEventListener("transitionend", removeEffect); // (2)
-              opts.mouseEvents.forEach(evt => {
-                _self.removeEventListener(evt, endtour);
-              });
-            }
-            
-            el_ripple.addEventListener("transitionend", setStransendState); // (1)
+            el_ripple.removeEventListener("transitionend", setStransendState); // (1)
+            el_ripple.removeEventListener("transitionend", removeEffect); // (2)
             opts.mouseEvents.forEach(evt => {
-              _self.addEventListener(evt, endtour);
+              _self.removeEventListener(evt, endtour);
             });
           }
+          
+          el_ripple.addEventListener("transitionend", setStransendState); // (1)
+          opts.mouseEvents.forEach(evt => {
+            _self.addEventListener(evt, endtour);
+          });
         }
-      });
-    }, opts.delayTrigger);
+      }
+    });
   }
 
   restartFormControl() {
@@ -232,7 +228,6 @@ export class MagicPie {
       mouseEvents: [this.eventList.mouseup, this.eventList.mouseleave]  
     }
 
-    setTimeout(() => {
       
       let switchStatus = (el_container) => {
         let status = (el_container.getAttribute(opts.ariaChecked) === 'true') ? 'false' : 'true';
@@ -352,6 +347,5 @@ export class MagicPie {
 
         }
       });
-    }, 0);
   }
 }
