@@ -57,6 +57,19 @@
     display: flex;
     position: fixed;
     transition: none;
+    .view-modal-mask-bg {
+      display: block;
+      background-color: #000;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    &:before {
+      visibility: hidden;
+      opacity: 0;
+    }
   }
   &.is-zoomingout {
     transition: none;
@@ -69,7 +82,10 @@
       opacity: 0;
     }
   }
-
+  &-mask-bg {
+    display: none;
+    z-index: -1;
+  }
   &-img {
     display: block;
     width: 100%;
@@ -82,7 +98,7 @@
       transform: translate(0px, 0px) scale(1);
     }
     &.on-loose {
-      animation: y-shake .5s;
+      animation: y-shake .42s;
     }
   }
 }

@@ -95,6 +95,7 @@ export class CustomeventComponent implements OnInit {
       data_flash_view_img: "data-flash-view-img",
       view_modal: "view-modal",
       view_modal_img: "view-modal-img",
+      view_modal_mask_bg: "view-modal-mask-bg",
       on_drag_cls: "on-drag",
       on_loose_cls: "on-loose",
       is_zooming_cls: "is-zooming",
@@ -105,7 +106,7 @@ export class CustomeventComponent implements OnInit {
       cheatKeys: {
         happyEnding: 'happy-ending'
       },
-      dragDistanceToDismiss: 5
+      dragDistanceToDismiss: 3
     }
     let _is_zooming_transform;
     let body_el = this.d.querySelector('body');
@@ -123,10 +124,12 @@ export class CustomeventComponent implements OnInit {
       let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
 
       if ( container_target !== null ) {
-
+        let container_target_rect = container_target.getBoundingClientRect();
         let data_flash_view_img_el = container_target.querySelector(`[${opts.data_flash_view_img}]`);
         let view_modal_el = container_target.querySelector(`.${opts.view_modal}`);
+        let view_modal_el_rect = view_modal_el.getBoundingClientRect();
         let view_modal_img_el = view_modal_el.querySelector(`.${opts.view_modal_img}`);
+        let view_modal_mask_bg = view_modal_el.querySelector(`.${opts.view_modal_mask_bg}`);
         // cached for global using
         let modalFullWidth = 0,
             modalFullHeight = 0;
@@ -144,7 +147,7 @@ export class CustomeventComponent implements OnInit {
         }
 
         let changeMisc = (state) => {
-          let overflowVal = 'hidden',
+          let overflowVal = 'static',
               attrVal = 'on',
               imgVisibility = 'hidden';
 
@@ -163,8 +166,7 @@ export class CustomeventComponent implements OnInit {
 
           changeMisc('on');
           
-          let container_target_rect = container_target.getBoundingClientRect(),
-              maxWidth = window.innerWidth,
+          let maxWidth = window.innerWidth,
               maxHeight = window.innerHeight,
               widthRatio = maxWidth / container_target_rect.width,
               heightRatio = maxHeight / container_target_rect.height;
@@ -202,16 +204,25 @@ export class CustomeventComponent implements OnInit {
         // Dragging Image
         if ( real_target.classList.contains(opts.view_modal_img) ) {
           
-          let client = <any>this.getClientXY(event);
+          let clientOrigin = <any>this.getClientXY(event);
+          let client = clientOrigin;
           let timer_for_dismiss;
-
+          
           let movingByDragging = (event1) => {
+
             event1.preventDefault();
             let client1 = <any>this.getClientXY(event1);
             let distanceX = client1.x - client.x;
             let distanceY = client1.y - client.y;
-            // console.log('distanceX: ', distanceX);
-            // console.log('distanceY: ', distanceY);
+
+            let distanceXOrigin = Math.abs(client1.x - clientOrigin.x);
+            let distanceYOrigin = Math.abs(client1.y - clientOrigin.y);
+            // console.log('distanceX: ', distanceXOrigin);
+            // console.log('distanceY: ', distanceYOrigin);
+            console.log(view_modal_el_rect.height);
+            
+            view_modal_mask_bg.style.opacity = 1 - Math.max(distanceXOrigin, distanceYOrigin) / view_modal_el_rect.height;
+
             client = client1;
             let stackTransformValue = real_target.style.transform.replace(/([^0-9\-,]*)/g,'').split(',');
 
@@ -253,7 +264,7 @@ export class CustomeventComponent implements OnInit {
               view_modal_el.classList.remove(opts.is_zoomed_cls);
               view_modal_el.classList.add(opts.is_zoomingout_cls);
               view_modal_el.style.cssText = _is_zooming_transform;
-              
+
               real_target.style.cssText = '';
               real_target.classList.remove(opts.on_drag_cls);
               real_target.classList.remove(opts.on_loose_cls);
@@ -277,7 +288,7 @@ export class CustomeventComponent implements OnInit {
                 real_target.classList.remove(opts.on_loose_cls);
                 real_target.removeEventListener("animationend", removeOnLooseEffect);
               }
-
+              view_modal_mask_bg.style.opacity = 1;
               real_target.style.transform = '';
               real_target.style.trasition = '';
               real_target.classList.add(opts.on_drag_cls);

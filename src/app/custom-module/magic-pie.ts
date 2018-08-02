@@ -236,7 +236,7 @@ export class MagicPie {
       }
 
       this.d.addEventListener(this.eventList.mousedown, (event) => {
-        
+        event.preventDefault();
         let real_target = event.target;
         let container_target = this.getClosestTargetByAttrName(real_target, opts.ariaChecked);
           
