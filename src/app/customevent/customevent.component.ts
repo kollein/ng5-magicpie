@@ -107,7 +107,7 @@ export class CustomeventComponent implements OnInit {
       },
       dragDistanceToDismiss: 5
     }
-    let transform_is_zooming;
+    let _is_zooming_transform;
     let body_el = this.d.querySelector('body');
 
     this.d.addEventListener(this.eventList.mousedown, (event) => {
@@ -156,7 +156,7 @@ export class CustomeventComponent implements OnInit {
 
           body_el.style.cssText = `overflow: ${overflowVal}`;
           container_target.setAttribute(opts.data_container, attrVal);
-          // data_flash_view_img_el.style.cssText = `visibility: ${imgVisibility}`;
+          data_flash_view_img_el.style.cssText = `visibility: ${imgVisibility}`;
         }
 
         if ( container_target.getAttribute(opts.data_container) !== 'on' ) {
@@ -192,8 +192,8 @@ export class CustomeventComponent implements OnInit {
           // console.log('translateLeft: ', translateLeft, 'translateTop: ', translateTop);
 
           view_modal_el.classList.add(opts.is_zooming_cls);
-          transform_is_zooming = `transform: translate(${translateLeft}px, ${translateTop}px) scale(${ratio});`;
-          view_modal_el.style.cssText = transform_is_zooming;
+          _is_zooming_transform = `transform: translate(${translateLeft}px, ${translateTop}px) scale(${ratio});`;
+          view_modal_el.style.cssText = _is_zooming_transform;
 
           view_modal_el.addEventListener("transitionend", removeEffect);
         }
@@ -223,21 +223,23 @@ export class CustomeventComponent implements OnInit {
             // console.log(prevTopPos, 'inpx');
             real_target.style.transform = `translate(${(distanceX + prevLeftPos)}px, ${(distanceY + prevTopPos)}px)`;
 
-            // swipe-down to dissmiss modal
+            /*
+              swipe up-down to dissmiss modal
+              delay to detect mouseup-leave for operation of the end tour. 
+            */
             clearTimeout(timer_for_dismiss);
             timer_for_dismiss = setTimeout(() => {
               
-              console.log(get_mouse_state(), opts.mouseEvents.indexOf(get_mouse_state()));
+              // console.log(get_mouse_state(), opts.mouseEvents.indexOf(get_mouse_state()));
               
               if ( opts.mouseEvents.indexOf(get_mouse_state()) > -1 ) {
                 Math.abs(distanceY) > opts.dragDistanceToDismiss && endtour(opts.cheatKeys.happyEnding);
               }
-            }, 100);
+            }, 20);
           }
 
           let removeZoomingoutEffect = () => {
-            view_modal_el.classList.remove(opts.is_zoomingout_cls, opts.is_zoomedout_cls);
-            view_modal_el.style.cssText = '';
+            view_modal_el.classList.remove(opts.is_zoomedout_cls);
             view_modal_el.removeEventListener("transitionend", removeZoomingoutEffect);
             changeMisc('off');
           }
@@ -245,27 +247,32 @@ export class CustomeventComponent implements OnInit {
           let endtour = (state) => {
             // update: state = event
             _mouse_state = state.type;
-
+            // End the tour!
             if ( state === opts.cheatKeys.happyEnding ) {
 
               view_modal_el.classList.remove(opts.is_zoomed_cls);
-              real_target.style.cssText = '';
               view_modal_el.classList.add(opts.is_zoomingout_cls);
-              view_modal_el.style.cssText = transform_is_zooming;
+              view_modal_el.style.cssText = _is_zooming_transform;
+              
+              real_target.style.cssText = '';
+              real_target.classList.remove(opts.on_drag_cls);
+              real_target.classList.remove(opts.on_loose_cls);
 
               setTimeout(() => {
+                view_modal_el.classList.add(opts.is_zoomedout_cls);
                 view_modal_el.classList.remove(opts.is_zoomingout_cls);
                 view_modal_el.style.cssText = '';
-                view_modal_el.classList.add(opts.is_zoomedout_cls);
                 view_modal_el.addEventListener("transitionend", removeZoomingoutEffect);
               }, 50);
 
             } else {
+              // End the img-drag-tour!
               let removeOnDragEffect = () => {
                 real_target.classList.remove(opts.on_drag_cls);
                 real_target.classList.add(opts.on_loose_cls);
                 real_target.removeEventListener("transitionend", removeOnDragEffect);
               }
+
               let removeOnLooseEffect = () => {
                 real_target.classList.remove(opts.on_loose_cls);
                 real_target.removeEventListener("animationend", removeOnLooseEffect);
