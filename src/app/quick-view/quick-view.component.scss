@@ -1,0 +1,129 @@
+@import 'variable';
+@import 'chrome-color';
+
+.body-container {
+  background-color: $google-blue-500;
+}
+.content-container {
+  margin: auto;
+  padding: 1200px 0; 
+  width: 980px;
+  .product-item {
+    position: relative;
+    width: 50%;  
+    > img {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.view-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 800;
+  -webkit-overflow-scrolling: touch;
+  [data-flash-view="on"] & {
+    visibility: visible;
+    opacity: 1;
+  }
+  &.is-pressed {
+    transition: transform .15s;
+    transform: scale(.95);
+    .view-modal-info-wrapper {
+      display: none;
+    }
+  }
+  &.is-zooming,
+  &.is-zoomingout {
+    transition: transform .5s cubic-bezier(0, 0, 0.2, 1.2), width .5s cubic-bezier(0, 0, 0.2, 1.2), height .5s cubic-bezier(0, 0, 0.2, 1.2);
+    overflow: hidden;
+  }
+  &.is-zoomed {
+    transition: none;
+    overflow: hidden;
+    overflow-y: auto;
+    &:not(.on-dragging) .view-modal-close-btn {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  &.on-dragging {
+    // border-radius: 12px;
+    box-shadow: 0 0 18px 6px rgba(0,0,0,0.16);
+  }
+  &.on-loosing {
+    transition: transform .3s;
+  }
+  &.is-loosed {
+    .view-modal-img-wrapper {
+      animation: y-shake .23s;
+    }
+  }
+  &-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+  }
+  &-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .3s, opacity .3s;
+    .ko-material-icon {
+      opacity: .6;
+      width: 30px;
+      height: 30px;
+      &:active {
+        opacity: 1;
+      }
+    }
+  }
+  &-img-wrapper {
+    width: 100%;
+  }
+  &-info-wrapper {
+    padding: 12px 12px 24px;
+    h1 {
+      font-size: 24px;
+    }
+  }
+}
+
+@media screen and (max-width: 610px) {
+  .content-container {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    .product-item {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+@keyframes y-shake {
+  0% { height: scaleY(1); }
+  50% { transform:  scaleY(.97); }
+}
+
+@media screen and (min-width: 980px) {
+  .g-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  .g-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+  }
+}

@@ -992,3 +992,15 @@ body {
     transform: scaleX(.08);
   }
 }
+
+// ICON SVG
+.ko-material-icon {
+  background-repeat: no-repeat;
+  &.close {
+    color: #fff;
+    background-image: url(assets/img/icon_close.svg);
+    background-position: top center;
+    width: 40px;
+    height: 40px;
+  }
+}

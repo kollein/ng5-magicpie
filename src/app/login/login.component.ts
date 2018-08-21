@@ -52,7 +52,7 @@ export class LoginComponent {
     // STO to do after View rendered and MagicPie invoked all events
     setTimeout(() => {
       this.username_input_el.nativeElement.focus();
-    }, 100);
+    }, 500);
   }
 
   login() {

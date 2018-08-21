@@ -14,6 +14,9 @@ import { ObserComponent } from './obser/obser.component';
 
 import { MagicPie } from './custom-module/magic-pie';
 import { CustomeventComponent } from './customevent/customevent.component';
+import { FlashViewComponent } from './flash-view/flash-view.component';
+import { QuickViewComponent } from './quick-view/quick-view.component';
+import { QuickViewScaleComponent } from './quick-view-scale/quick-view-scale.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { CustomeventComponent } from './customevent/customevent.component';
     HomeComponent,
     ObserComponent,
     CustomeventComponent,
+    FlashViewComponent,
+    QuickViewComponent,
+    QuickViewScaleComponent,
   ],
   imports: [
     BrowserModule,

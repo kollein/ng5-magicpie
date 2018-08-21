@@ -4,7 +4,7 @@
   width: 980px;
   height: 1500px;
   background-color: red;
-  .column {
+  .product-item {
     position: relative;
     width: 50%;
     > img {
@@ -33,7 +33,7 @@
     width: 100%;
     height: 100%;
     padding: 100vh 100vw;
-    background: #000;
+    background: #fff;
     z-index: -1;
     visibility: hidden;
     opacity: 0;
@@ -51,15 +51,20 @@
     }
   }
   &.is-zooming {
-    transition: transform .3s cubic-bezier(.2, 0, .2, 1);
+    transition: transform .3s cubic-bezier(.2, 0, .2, 1), width .3s, top .3s, left .3s;
   }
   &.is-zoomed {
-    display: flex;
     position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
     transition: none;
+    background-color: #fff;
+    overflow: hidden;
+    overflow-y: auto;
     .view-modal-mask-bg {
       display: block;
-      background-color: #000;
+      background-color: #fff;
       position: absolute;
       top: 0;
       left: 0;
@@ -98,7 +103,16 @@
       transform: translate(0px, 0px) scale(1);
     }
     &.on-loose {
-      animation: y-shake .42s;
+      animation: y-shake .3s;
+    }
+  }
+  .img-wrapper {
+    width: 100%;
+  }
+  .info-wrapper {
+    height: 1200px;
+    h1 {
+      font-size: 24px;
     }
   }
 }
@@ -106,10 +120,27 @@
 @media screen and (max-width: 610px) {
   .content-container {
     width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    .product-item {
+      width: 100%;
+      margin-bottom: 20px;
+    }
   }
 }
 
 @keyframes y-shake {
   0% { transform: scaleY(1); }
   50% { transform:  scaleY(.95); }
+}
+
+@media screen and (min-width: 980px) {
+  .g-scrollbar::-webkit-scrollbar {
+    width: 0px;
+    height: 5px;
+  }
+  .g-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, 0.10), inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+  }
 }

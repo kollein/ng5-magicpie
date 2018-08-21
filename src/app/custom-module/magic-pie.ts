@@ -206,9 +206,10 @@ export class MagicPie {
 
       // SET POSITION TRANSFORM
       this.d.addEventListener(this.eventList.mousedown, (event) => {
+
         let real_target = event.target;
         let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
-  
+        
         if( real_target.classList.contains(opts.control_ipt_cls) === true ) {
           let client = <any>this.getClientXY(event);
           let offs = container_target.getBoundingClientRect(),
@@ -236,7 +237,7 @@ export class MagicPie {
       }
 
       this.d.addEventListener(this.eventList.mousedown, (event) => {
-        event.preventDefault();
+        
         let real_target = event.target;
         let container_target = this.getClosestTargetByAttrName(real_target, opts.ariaChecked);
           
