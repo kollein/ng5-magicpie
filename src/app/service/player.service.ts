@@ -15,7 +15,8 @@ export class PlayerService {
 
   // URL to web api
   private playerUrl = '../assets/data/player.json';
-  // private playerUrl = 'http://httpstat.us/200?sleep=500 '; // to test Timeout
+  // for Timeout testing
+  // private playerUrl = 'http://httpstat.us/200?sleep=500 '; 
 
   constructor(
     private http: HttpClient,
