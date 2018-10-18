@@ -24,7 +24,7 @@ export class MagicPieModule {
   }
   eventList;
   options = {
-    "delayDetectClick": 200
+    "clickDetectdelay": 200
   }
 
   constructor() {
@@ -265,7 +265,7 @@ export class MagicPieModule {
             let istransendForClickingCase = container_target.getAttribute('istransend');
             console.log('detect clicked: ', istransendForClickingCase);
             istransendForClickingCase === 'false' && switchStatus(target);
-          }, this.eventList.mousedown === this.eventMap.desktop.mousedown ? this.options.delayDetectClick : 0);
+          }, this.eventList.mousedown === this.eventMap.desktop.mousedown ? this.options.clickDetectdelay : 0);
 
           let switchStatusByDragging = (event1) => {
 
