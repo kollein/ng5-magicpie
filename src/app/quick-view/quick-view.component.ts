@@ -195,19 +195,28 @@ export class QuickViewComponent implements OnInit {
 
           }
 
+          let preventDefault = e => {
+            e.preventDefault();
+          }
+
           let changeMisc = (state) => {
             let overflowVal = 'hidden',
-                heightVal = `${this.maxHeight}px`,
-                attrVal = 'on',
-                imgVisibility = 'hidden';
+              heightVal = `${this.maxHeight}px`,
+              attrVal = 'on',
+              imgVisibility = 'hidden';
 
             if ( state === 'off' ) {
-                overflowVal = 'static',
-                heightVal = '100%',
-                attrVal = 'off';
-                imgVisibility = 'visible';
-            }
+              overflowVal = 'static',
+              heightVal = '100%',
+              attrVal = 'off';
+              imgVisibility = 'visible';
 
+              console.log('enableScroll');
+              body_el.removeEventListener('touchmove', preventDefault, { passive: false });
+            } else {
+              console.log('disableScroll');
+              body_el.addEventListener('touchmove', preventDefault, { passive: false });
+            }
             body_el.style.cssText = `overflow: ${overflowVal};height: ${heightVal}`;
             container_target.setAttribute(opts.data_container, attrVal);
             data_flash_view_img_el.style.cssText = `visibility: ${imgVisibility}`;

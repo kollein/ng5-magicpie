@@ -3,7 +3,6 @@ import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angula
 import { PlayerService } from '../service/player.service';
 import { MessageService } from '../service/message.service';
 import { Subscriber } from 'rxjs/Subscriber';
-import { MagicPie } from '../custom-module/magic-pie';
 
 @Component({
   selector: 'app-login',
@@ -37,7 +36,6 @@ export class LoginComponent {
   public message = '';
 
   constructor(
-    public magicpie: MagicPie,
     private playerService: PlayerService,
     private messageService: MessageService
   ) {

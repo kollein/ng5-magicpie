@@ -12,7 +12,7 @@ import { MessageService }       from './service/message.service';
 import { HomeComponent } from './home/home.component';
 import { ObserComponent } from './obser/obser.component';
 
-import { MagicPie } from './custom-module/magic-pie';
+import { MagicPieModule } from './module/magic-pie';
 import { CustomeventComponent } from './customevent/customevent.component';
 import { FlashViewComponent } from './flash-view/flash-view.component';
 import { QuickViewComponent } from './quick-view/quick-view.component';
@@ -34,11 +34,11 @@ import { QuickViewScaleComponent } from './quick-view-scale/quick-view-scale.com
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    MagicPieModule,
   ],
   providers: [ 
     PlayerService,
     MessageService,
-    MagicPie,
   ],
   bootstrap: [ AppComponent ]
 })

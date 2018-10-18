@@ -1,0 +1,355 @@
+import { NgModule } from "@angular/core";
+@NgModule({
+  exports: [
+    // itself invoking class
+  ]
+})
+
+export class MagicPieModule {
+  a;
+  d;
+  eventMap = {
+    "desktop": {
+      mousedown: "mousedown",
+      mouseup: "mouseup",
+      mousemove: "mousemove",
+      mouseleave: "mouseleave"
+    },
+    "mobile": {
+      mousedown: "touchstart",
+      mouseup: "touchend",
+      mousemove: "touchmove",
+      mouseleave: "touchcancel"
+    }
+  }
+  eventList;
+  options = {
+    "delayDetectClick": 200
+  }
+
+  constructor() {
+    this.a = window;
+    this.d = this.a.document;
+    // switch Event List
+    this.eventList = (typeof window.orientation !== 'undefined') ? this.eventMap.mobile : this.eventMap.desktop;
+    // FORM CONTROL : invoking
+    this.restartFormControl();
+    // RIPPLE WAVE: invoking
+    this.restartRippleWave();
+    // // TOGGLE PAPER: invoking
+    this.restartSwitchStatus();
+  }
+
+  getClientXY(e): any {
+    let client = {
+      x: false,
+      y: false,
+      pageX: false,
+      pageY: false
+    }
+    if (e.type.search('touch') > -1) {
+      client.x = e.touches[0].clientX,
+        client.y = e.touches[0].clientY;
+      client.pageX = e.changedTouches[0].pageX;
+      client.pageY = e.changedTouches[0].pageY;
+    } else {
+      client.x = e.clientX;
+      client.y = e.clientY;
+      client.pageX = e.pageX;
+      client.pageY = e.pageY;
+    }
+    return client;
+  }
+
+  getClosestTargetByAttrName(el, attrName) {
+    while ((el = el.parentElement) && !el.hasAttribute(attrName));
+    return el;
+  }
+
+  restartRippleWave() {
+    let opts = {
+      data_container: "data-ripple",
+      rippleCls: "ripple",
+      activeCls: "active",
+      mouseEvents: [this.eventList.mouseup, this.eventList.mouseleave],
+      delayBeforeEndTour: 150,
+      cheatKeys: {
+        happyEnding: 'happy-ending'
+      },
+      delayTrigger: 80,
+      mapkeydata: {
+        background_color: 'background-color',
+        position: 'position'
+      }
+    }
+
+    this.d.addEventListener(this.eventList.mousedown, (event) => {
+
+      let real_target = event.target;
+      let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
+
+      if (container_target !== null) {
+        let target = container_target;
+        let pallete = {
+          background_color: target.getAttribute(`data-${opts.mapkeydata.background_color}`),
+          position: target.getAttribute(`data-${opts.mapkeydata.position}`)
+        }
+
+        console.log(pallete);
+
+        // AVOID DUPLICATE CLICK ON @.ripple
+        let old_el_ripple = target.querySelector(`.${opts.rippleCls}`);
+        console.log("old_el_ripple:" + old_el_ripple);
+
+        if (old_el_ripple !== null) {
+          // ASSIGN LEXICAL @this
+          let _self = target;
+          _self.classList.add(opts.activeCls);
+          /*
+            FIND POSITION OF @this
+            Note: clientX, clientY: get position with screen-captured as what you see on
+          */
+          let client = this.getClientXY(event);
+
+          let offs = _self.getBoundingClientRect(),
+            x = client.x - offs.left + 'px',
+            y = client.y - offs.top + 'px',
+            elWidth = offs.width + 'px';
+
+          // Stylize @.ripple
+          let el_ripple = _self.querySelector(`.${opts.rippleCls}`);
+          if (pallete.position === 'center') {
+            x = offs.width / 2 + 'px';
+            y = offs.height / 2 + 'px';
+          }
+          let customBackground = pallete.background_color !== '' ? `background: ${pallete.background_color}` : '';
+          el_ripple.style.cssText = `width: ${elWidth};height:${elWidth};top:${y};left:${x};${customBackground}`;
+
+          let setTransendState = (val = true) => {
+            _self.setAttribute('istransend', val);
+          }
+          let getTransendState = () => {
+            return _self.getAttribute('istransend');
+          }
+
+          setTransendState(false);
+
+          let endtour = () => {
+            if (getTransendState() !== 'false') {
+              console.log('happy ending!');
+              removeEffect(opts.cheatKeys.happyEnding);
+              setTransendState(false);
+            } else {
+              console.log('renew transitionend event then auto-delete!');
+              el_ripple.removeEventListener("transitionend", setTransendState);
+              el_ripple.addEventListener("transitionend", removeEffect); // (2)
+            }
+          }
+
+          let removeEffect = (state) => {
+            setTimeout(() => {
+              _self.classList.remove(opts.activeCls);
+            }, (state === opts.cheatKeys.happyEnding ? 0 : opts.delayBeforeEndTour));
+
+            el_ripple.removeEventListener("transitionend", setTransendState); // (1)
+            el_ripple.removeEventListener("transitionend", removeEffect); // (2)
+            opts.mouseEvents.forEach(evt => {
+              _self.removeEventListener(evt, endtour);
+            });
+          }
+
+          el_ripple.addEventListener("transitionend", setTransendState); // (1)
+          opts.mouseEvents.forEach(evt => {
+            _self.addEventListener(evt, endtour);
+          });
+        }
+      }
+    });
+  }
+
+  restartFormControl() {
+    let opts = {
+      data_container: "data-bound-control",
+      gg_bound_control_cls: "gg-bound-control",
+      activeCls: "active-gg-bound-control",
+      control_ipt_cls: "gg-bound-control-input",
+      ef_bottom_border_cls: "gg-bound-control-ef-bottom-border",
+      groupEvents: ['focusout', 'blur']
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+
+      let boundControls = this.d.querySelectorAll(`[${opts.data_container}]`);
+
+      boundControls.forEach(_self => {
+
+        let inputElement = _self.querySelector(`.${opts.control_ipt_cls}`);
+
+        inputElement.addEventListener('focusin', (event) => {
+          _self.classList.add(opts.activeCls);
+          if (inputElement.value) {
+            _self.classList.remove('hasValue');
+          }
+        });
+
+        // FOCUSOUT, BLUR
+        let endtour = () => {
+          _self.classList.remove(opts.activeCls);
+          if (inputElement.value) {
+            _self.classList.add('hasValue');
+          } else {
+            _self.classList.remove('hasValue');
+          }
+        }
+
+        opts.groupEvents.forEach(evt => {
+          inputElement.addEventListener(evt, endtour);
+        });
+
+      });
+
+      // SET POSITION TRANSFORM
+      this.d.addEventListener(this.eventList.mousedown, (event) => {
+
+        let real_target = event.target;
+        let container_target = this.getClosestTargetByAttrName(real_target, opts.data_container);
+
+        if (real_target.classList.contains(opts.control_ipt_cls) === true) {
+          let client = this.getClientXY(event);
+          let offs = container_target.getBoundingClientRect(),
+            x = client.x - offs.left;
+          // Stylize @.el_ef_bottom_border
+          let el_ef_bottom_border = container_target.querySelector(`.${opts.ef_bottom_border_cls}`);
+          el_ef_bottom_border.style.cssText = `transform-origin: ${x}px center 0px;`;
+        }
+      });
+    });
+  }
+
+  restartSwitchStatus() {
+    let opts = {
+      ariaChecked: 'aria-checked',
+      paperRippleEl: 'paper-ripple',
+      mouseEvents: [this.eventList.mouseup, this.eventList.mouseleave]
+    }
+
+
+    let switchStatus = (el_container) => {
+      let status = (el_container.getAttribute(opts.ariaChecked) === 'true') ? 'false' : 'true';
+      el_container.setAttribute(opts.ariaChecked, status);
+      return status;
+    }
+
+    this.d.addEventListener(this.eventList.mousedown, (event) => {
+
+      let real_target = event.target;
+      let container_target = this.getClosestTargetByAttrName(real_target, opts.ariaChecked);
+
+      if (container_target !== null) {
+        let target = container_target;
+        let client = this.getClientXY(event);
+        let startX = client.x;
+
+        if (real_target.parentNode.hasAttribute(opts.ariaChecked)) {
+          // @.toggle-bar clicked
+          switchStatus(target);
+          console.log('toggle clicked');
+
+        } else {
+
+          console.log('circle mousedown');
+          // @.circle clicked
+          let status = target.getAttribute(opts.ariaChecked);
+          // Detect clicking case or dragging case
+          setTimeout(() => {
+            let istransendForClickingCase = container_target.getAttribute('istransend');
+            console.log('detect clicked: ', istransendForClickingCase);
+            istransendForClickingCase === 'false' && switchStatus(target);
+          }, this.eventList.mousedown === this.eventMap.desktop.mousedown ? this.options.delayDetectClick : 0);
+
+          let switchStatusByDragging = (event1) => {
+
+            if (startX !== 'stopped') {
+              let client = this.getClientXY(event1);
+              let distance = startX - client.x;
+              console.log(startX, client.x, status);
+              console.log('distance: ', distance);
+              let validDragging = false;
+              if (status === 'true') {
+                validDragging = distance > 3 ? true : false;
+              } else {
+                validDragging = distance < -3 ? true : false;
+              }
+              console.log('validDragging: ', validDragging);
+
+              if (validDragging) {
+                console.log('dragged');
+                // update
+                status = switchStatus(target);
+              }
+            }
+          }
+
+          let removeDragging = () => {
+            console.log('remove dragging');
+            this.d.removeEventListener(this.eventList.mousemove, switchStatusByDragging); // (1)
+            this.d.removeEventListener(this.eventList.mouseup, removeDragging); // (2)
+          }
+
+          this.d.addEventListener(this.eventList.mousemove, switchStatusByDragging); // (1)
+          this.d.addEventListener(this.eventList.mouseup, removeDragging); // (2)
+        }
+
+        let myRipple = target.querySelector('.' + opts.paperRippleEl);
+        myRipple.style.opacity = 1;
+        // SET SCALE BY parentNode
+        var myRipple_parent_height = myRipple.parentNode.getBoundingClientRect().height,
+          scale_n = 1;
+        if (myRipple_parent_height) {
+          scale_n = 2.5;
+        }
+        myRipple.style.transform = 'scale(' + scale_n + ')';
+
+        let setTransendState = (val = true) => {
+          container_target.setAttribute('istransend', val);
+        }
+        let getTransendState = () => {
+          return container_target.getAttribute('istransend');
+        }
+
+        setTransendState(false);
+
+        let removeEffect = () => {
+          myRipple.style.opacity = 0;
+          myRipple.style.transform = 'scale(0)';
+
+          // remove all events
+          myRipple.removeEventListener("transitionend", setTransendState); // (1)
+          myRipple.removeEventListener("transitionend", removeEffect); // (2)
+          opts.mouseEvents.forEach(evt => {
+            target.removeEventListener(evt, endtour);
+          });
+
+        }
+
+        let endtour = () => {
+          if (getTransendState() !== 'false') {
+            console.log('happy ending!');
+            removeEffect();
+            setTransendState(false);
+          } else {
+            console.log('renew transitionend event then auto-delete!');
+            myRipple.removeEventListener("transitionend", setTransendState); // (1)
+            myRipple.addEventListener("transitionend", removeEffect); // (2)
+          }
+        }
+
+        myRipple.addEventListener("transitionend", setTransendState); // (1)
+        opts.mouseEvents.forEach(evt => {
+          target.addEventListener(evt, endtour);
+        });
+
+      }
+    });
+  }
+}

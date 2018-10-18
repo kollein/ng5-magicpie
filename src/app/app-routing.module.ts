@@ -11,13 +11,13 @@ import { QuickViewScaleComponent } from './quick-view-scale/quick-view-scale.com
 
  
 const routes: Routes = [
-  { path: '', component: QuickViewScaleComponent },
+  { path: '', component: LoginComponent },
   { path: 'dashboard', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'obser', component: ObserComponent },
   { path: 'photo', component: CustomeventComponent },
   { path: 'flash', component: FlashViewComponent },
-  { path: 'quick', component: QuickViewComponent }
+  { path: 'quick', component: QuickViewScaleComponent }
 ];
  
 @NgModule({
